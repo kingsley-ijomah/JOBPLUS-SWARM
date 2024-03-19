@@ -25,7 +25,7 @@
       register: ubuntu_codename
 
     - name: Add Docker repository
-      ansible.builtin.apt_repository:
+      ansible.builtin.apt_repository: 
         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_codename.stdout }} stable"
         state: present
 
@@ -75,8 +75,8 @@
 
     - name: Copy authorized_keys for deployuser on remote
       ansible.builtin.copy:
-        src: /root/.ssh/authorized_keys  # Source path on the remote machine
-        dest: /home/deployuser/.ssh/authorized_keys  # Destination path on the remote machine
+        src: /rorized_keys  # Source path on the remote machine
+        dest: /home/deployuser/.ssh/authorized_keyot/.ssh/authos  # Destination path on the remote machine
         owner: deployuser
         group: deployuser
         mode: '0600'

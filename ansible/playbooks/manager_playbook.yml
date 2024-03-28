@@ -1,6 +1,0 @@
----
-- hosts: swarm_managers
-  become: yes
-
-  roles:
-    - common_tasks

@@ -1,6 +1,0 @@
----
-- hosts: swarm_workers
-  become: yes
-
-  roles:
-    - common_tasks

@@ -20,14 +20,21 @@
   roles:
     - gluster_mount_volume
 
-- name: Swarm Initialize and Deploy
+- name: Swarm Initialize
   hosts: swarm_managers[0]
   become: yes
   roles:
     - swarm_initialize
+  tags:
+    - swarm_initialize
+
+- name: Swarm Deploy
+  hosts: swarm_managers[0]
+  become: yes
+  roles:
     - swarm_deploy
   tags:
-    - swarm_initialize_deploy
+    - swarm_deploy
 
 - name: Join Swarm as workers
   hosts: swarm_workers

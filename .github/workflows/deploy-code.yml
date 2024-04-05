@@ -22,18 +22,18 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 
-      # - name: Copy code to manager node on server
-      #   run: |
-      #     ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
+      - name: Copy code to manager node on server
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
 
-      #     mkdir -p ${{ secrets.APP_DIR_PATH }}
+          mkdir -p ${{ secrets.APP_DIR_PATH }}
 
-      #     if [ -d ${{ secrets.APP_DIR_PATH }}/.git ]; then
-      #       git -C ${{ secrets.APP_DIR_PATH }} clean -fd
-      #       git -C ${{ secrets.APP_DIR_PATH }} reset --hard HEAD
-      #       git -C ${{ secrets.APP_DIR_PATH }} pull
-      #     else
-      #       rm -rf ${{ secrets.APP_DIR_PATH }}/*
-      #       git clone ${{ secrets.REPO_PAT_URL }} ${{ secrets.APP_DIR_PATH }}
-      #     fi;" 
+          if [ -d ${{ secrets.APP_DIR_PATH }}/.git ]; then
+            git -C ${{ secrets.APP_DIR_PATH }} clean -fd
+            git -C ${{ secrets.APP_DIR_PATH }} reset --hard HEAD
+            git -C ${{ secrets.APP_DIR_PATH }} pull
+          else
+            rm -rf ${{ secrets.APP_DIR_PATH }}/*
+            git clone ${{ secrets.REPO_PAT_URL }} ${{ secrets.APP_DIR_PATH }}
+          fi;" 
   

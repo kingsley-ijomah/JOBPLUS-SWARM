@@ -66,7 +66,7 @@
 
   - name: Create app directory for the repository
     ansible.builtin.file:
-      path: /var/www/jobplus-app
+      path: /mnt/shared_storage/jobplus-app
       state: directory
       owner: deployuser
       group: deployuser
@@ -74,7 +74,7 @@
 
   - name: Set ownership and permissions for the app directory
     ansible.builtin.file:
-      path: /var/www/jobplus-app
+      path: /mnt/shared_storage/jobplus-app
       state: directory
       owner: deployuser
       group: deployuser

@@ -4,7 +4,7 @@
   become: yes
   roles:
     - common_tasks
-    - gluster_install
+    # - gluster_install
   tags:
     - common
 

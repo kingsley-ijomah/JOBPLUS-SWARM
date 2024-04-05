@@ -9,7 +9,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      APP_DIR_PATH: /var/www/jobplus-app
+      APP_DIR_PATH: /mnt/shared_storage/jobplus-app
 
     steps:
       - name: Checkout repository

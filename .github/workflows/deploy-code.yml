@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
         
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |
@@ -32,6 +34,6 @@ jobs:
             git -C $APP_DIR_PATH pull
           else
             rm -rf $APP_DIR_PATH/*
-            git clone ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
+            git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
   

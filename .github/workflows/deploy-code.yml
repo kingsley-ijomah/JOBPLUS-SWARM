@@ -5,36 +5,35 @@ on:
     branches:
       - experimental
 
-      
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - name: Set up SSH Keys Access for Digital Ocean Droplet
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
+      # - name: Set up SSH Keys Access for Digital Ocean Droplet
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 
-      - name: Copy code to manager node on server
-        run: |
-          ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ env.MANAGER_RESERVED_IP }} "\
+      # - name: Copy code to manager node on server
+      #   run: |
+      #     ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ env.MANAGER_RESERVED_IP }} "\
 
-          mkdir -p ${{ env.APP_DIR_PATH }}
+      #     mkdir -p ${{ env.APP_DIR_PATH }}
 
-          if [ -d ${{ env.APP_DIR_PATH }}/.git ]; then
-            git -C ${{ env.APP_DIR_PATH }} clean -fd
-            git -C ${{ env.APP_DIR_PATH }} reset --hard HEAD
-            git -C ${{ env.APP_DIR_PATH }} pull
-          else
-            rm -rf ${{ env.APP_DIR_PATH }}/*
-            git clone ${{ env.REPO_PAT_URL }} ${{ env.APP_DIR_PATH }}
-          fi;" 
+      #     if [ -d ${{ env.APP_DIR_PATH }}/.git ]; then
+      #       git -C ${{ env.APP_DIR_PATH }} clean -fd
+      #       git -C ${{ env.APP_DIR_PATH }} reset --hard HEAD
+      #       git -C ${{ env.APP_DIR_PATH }} pull
+      #     else
+      #       rm -rf ${{ env.APP_DIR_PATH }}/*
+      #       git clone ${{ env.REPO_PAT_URL }} ${{ env.APP_DIR_PATH }}
+      #     fi;" 
   

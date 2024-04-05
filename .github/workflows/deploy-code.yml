@@ -19,8 +19,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
-          # ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 
       # - name: Copy code to manager node on server
       #   run: |

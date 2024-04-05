@@ -35,6 +35,8 @@
       name: docker
       enabled: yes
 
+
+
   - name: Create deployuser
     ansible.builtin.user:
       name: deployuser
@@ -61,6 +63,24 @@
       regexp: '^%sudo'
       line: '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL'
       validate: 'visudo -cf %s'
+
+  - name: Create app directory for the repository
+    ansible.builtin.file:
+      path: /var/www/jobplus-app
+      state: directory
+      owner: deployuser
+      group: deployuser
+      mode: '0755'
+
+  - name: Set ownership and permissions for the app directory
+    ansible.builtin.file:
+      path: /var/www/jobplus-app
+      state: directory
+      owner: deployuser
+      group: deployuser
+      mode: '0755'
+
+
 
   - name: Install Docker Compose
     remote_user: ubuntu

@@ -38,13 +38,11 @@
   tags:
     - swarm_initialize
 
-- name: Swarm Deploy
-  hosts: swarm_managers[0]
+- name: Deploy User Setup 
+  hosts: servers
   become: yes
   roles:
-    - swarm_deploy
-  tags:
-    - swarm_deploy
+    - deployuser_setup
 
 - name: Join Swarm as workers
   hosts: swarm_workers

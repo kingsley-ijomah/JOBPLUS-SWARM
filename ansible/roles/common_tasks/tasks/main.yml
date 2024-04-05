@@ -54,6 +54,14 @@
       groups: docker
       append: yes
 
+  - name: Allow deployuser to execute sudo commands without a password
+    ansible.builtin.lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL'
+      validate: 'visudo -cf %s'
+
   - name: Install Docker Compose
     remote_user: ubuntu
     get_url: 

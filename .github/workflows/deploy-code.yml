@@ -36,5 +36,4 @@ jobs:
             rm -rf ${{ secrets.APP_DIR_PATH }}/*
             git clone ${{ secrets.REPO_PAT_URL }} ${{ secrets.APP_DIR_PATH }}
           fi;"
-
   

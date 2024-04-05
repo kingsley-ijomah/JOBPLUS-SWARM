@@ -14,29 +14,29 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-          
+
       - name: Fetch server SSH key
-        run: ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }}
+        run: ssh-keyscan -H ${{ secrets.MANAGER_RESERVED_IP }}
         
-      # - name: Set up SSH Keys Access for Digital Ocean Droplet
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-      #     ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
+      - name: Set up SSH Keys Access for Digital Ocean Droplet
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 
       # - name: Copy code to manager node on server
       #   run: |
-      #     ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ env.MANAGER_RESERVED_IP }} "\
+      #     ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
 
-      #     mkdir -p ${{ env.APP_DIR_PATH }}
+      #     mkdir -p ${{ secrets.APP_DIR_PATH }}
 
-      #     if [ -d ${{ env.APP_DIR_PATH }}/.git ]; then
-      #       git -C ${{ env.APP_DIR_PATH }} clean -fd
-      #       git -C ${{ env.APP_DIR_PATH }} reset --hard HEAD
-      #       git -C ${{ env.APP_DIR_PATH }} pull
+      #     if [ -d ${{ secrets.APP_DIR_PATH }}/.git ]; then
+      #       git -C ${{ secrets.APP_DIR_PATH }} clean -fd
+      #       git -C ${{ secrets.APP_DIR_PATH }} reset --hard HEAD
+      #       git -C ${{ secrets.APP_DIR_PATH }} pull
       #     else
-      #       rm -rf ${{ env.APP_DIR_PATH }}/*
-      #       git clone ${{ env.REPO_PAT_URL }} ${{ env.APP_DIR_PATH }}
+      #       rm -rf ${{ secrets.APP_DIR_PATH }}/*
+      #       git clone ${{ secrets.REPO_PAT_URL }} ${{ secrets.APP_DIR_PATH }}
       #     fi;" 
   

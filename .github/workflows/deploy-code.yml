@@ -18,7 +18,7 @@ jobs:
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |
           mkdir -p ~/.ssh
-          # echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           # chmod 600 ~/.ssh/id_rsa
           # ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 

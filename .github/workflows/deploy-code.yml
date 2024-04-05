@@ -15,12 +15,13 @@ jobs:
         with:
           fetch-depth: 2
 
-      # - name: Set up SSH Keys Access for Digital Ocean Droplet
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-      #     ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
+      - name: Set up SSH Keys Access for Digital Ocean Droplet
+        run: |
+          echo "secret: ${{ secrets.SSH_PRIVATE_KEY }}"
+          # mkdir -p ~/.ssh
+          # echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          # chmod 600 ~/.ssh/id_rsa
+          # ssh-keyscan -H ${{ env.MANAGER_RESERVED_IP }} >> ~/.ssh/known_hosts
 
       # - name: Copy code to manager node on server
       #   run: |

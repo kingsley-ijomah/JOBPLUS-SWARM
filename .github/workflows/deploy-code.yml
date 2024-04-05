@@ -3,7 +3,7 @@ name: Deploy Code to Manager Node
 on:
   push:
     branches:
-      - main
+      - experimental
 
 jobs:
   build-and-push:

@@ -54,7 +54,6 @@
       groups: docker
       append: yes
       
-
   - name: Allow deployuser to execute sudo commands without a password
     ansible.builtin.lineinfile:
       path: /etc/sudoers

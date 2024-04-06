@@ -1,4 +1,4 @@
-name: Deploy Code to Manager Node
+name: Deploy Code
 
 on:
   push:

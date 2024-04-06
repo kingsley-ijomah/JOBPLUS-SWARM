@@ -39,10 +39,10 @@ jobs:
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
           
-      - name: Trigger Deployment Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Build and Push
-          token: ${{ secrets.PAT_SECRET }}
-          ref: experimental  # Specify the branch where the workflow is located
+      # - name: Trigger Deployment Workflow
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: Build and Push
+      #     token: ${{ secrets.PAT_SECRET }}
+      #     ref: experimental  # Specify the branch where the workflow is located
   

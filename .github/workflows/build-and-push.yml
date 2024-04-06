@@ -1,13 +1,15 @@
 name: Build and Push
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - experimental
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Vault CLI
+      - name: Testing
         run: |
           echo "Running next workflow step..."

@@ -26,22 +26,6 @@
     line: '%sudo   ALL=(ALL:ALL) NOPASSWD:ALL'
     validate: 'visudo -cf %s'
 
-- name: Create app directory for the repository
-  ansible.builtin.file:
-    path: /mnt/shared_storage/jobplus-app
-    state: directory
-    owner: deployuser
-    group: deployuser
-    mode: '0755'
-
-- name: Set ownership and permissions for the app directory
-  ansible.builtin.file:
-    path: /mnt/shared_storage/jobplus-app
-    state: directory
-    owner: deployuser
-    group: deployuser
-    mode: '0755'
-
 - name: Create .ssh directory for deployuser
   ansible.builtin.file:
     path: /home/deployuser/.ssh

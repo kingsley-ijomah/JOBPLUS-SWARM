@@ -26,6 +26,7 @@
     - probe_peers
   ignore_errors: yes
 
+
 # first worker node will probe back at first mananger node
 - name: Probe the first manager from the first worker
   gluster.gluster.gluster_peer:

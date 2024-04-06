@@ -28,6 +28,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
 
+          
           sudo mkdir -p $APP_DIR_PATH
 
           if [ -d $APP_DIR_PATH/.git ]; then

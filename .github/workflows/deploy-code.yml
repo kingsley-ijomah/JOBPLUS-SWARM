@@ -43,5 +43,6 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Build and Push
+          token: ${{ secrets.PAT_SECRET }}
           ref: experimental  # Specify the branch where the workflow is located
   

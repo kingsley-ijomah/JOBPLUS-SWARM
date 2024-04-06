@@ -6,7 +6,7 @@ on:
       - experimental
 
 jobs:
-  build-and-push:
+  deploy-code:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
@@ -38,4 +38,10 @@ jobs:
             rm -rf $APP_DIR_PATH/*
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
+
+      - name: Trigger Build and Push Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Build and Push
+          token: ${{ secrets.PAT_SECRET }}
   

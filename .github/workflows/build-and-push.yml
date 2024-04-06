@@ -20,4 +20,9 @@ jobs:
       - name: Build and Push Nginx Docker Image
         run: |
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"  
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
+
+      - name: Trigger Stack and Deploy Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Stack Deploy

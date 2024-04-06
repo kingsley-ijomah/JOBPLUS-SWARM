@@ -1,0 +1,17 @@
+name: Stack Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_DIR_PATH: /mnt/shared_storage/jobplus-app
+
+    steps:
+      - name: Deploy Changed Services
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
+          cd $APP_DIR_PATH && \
+          docker stack deploy -c docker-compose.yml app_stack"

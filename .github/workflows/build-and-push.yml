@@ -1,11 +1,11 @@
 name: Build and Push
 
 on:
-  workflow_run:
-    workflows: ["Deploy Code"]
-    branches: [experimental]
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      changed_services_with_stack:
+        description: 'Track which services and stacks were updated'
+        type: string
 
 jobs:
   build-and-push:

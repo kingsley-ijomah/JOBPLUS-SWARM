@@ -2,6 +2,11 @@ name: Stack Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      stack_deploy:
+        description: 'Name of the stack to deploy'
+        required: true
+        default: 'app_stack'
 
 jobs:
   stack-deploy:

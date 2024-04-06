@@ -28,7 +28,6 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
 
-
           mkdir -p $APP_DIR_PATH
 
           if [ -d $APP_DIR_PATH/.git ]; then
@@ -39,4 +38,9 @@ jobs:
             rm -rf $APP_DIR_PATH/*
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
+          
+      - name: Trigger Deployment Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Build and Push Images
   

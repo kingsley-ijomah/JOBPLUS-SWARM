@@ -1,0 +1,13 @@
+name: Build and Push Images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-push-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Vault CLI
+        run: |
+          echo "Running next workflow step..."

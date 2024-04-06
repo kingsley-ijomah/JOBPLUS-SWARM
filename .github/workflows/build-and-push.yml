@@ -1,9 +1,11 @@
 name: Build and Push
 
 on:
-  push:
-    branches:
-      - experimental
+  workflow_run:
+    workflows: ["Deploy Code"]
+    branches: [experimental]
+    types:
+      - completed
 
 jobs:
   build-and-push:

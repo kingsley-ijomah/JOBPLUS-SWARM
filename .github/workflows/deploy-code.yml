@@ -40,7 +40,7 @@ jobs:
           fi;"
           
       - name: Trigger Deployment Workflow
-        uses: benc-uk/workflow-dispatch@v1
+        uses: convictional/trigger-workflow-and-wait@v1
         with:
           workflow: Build and Push Images
           ref: experimental  # Specify the branch where the workflow is located

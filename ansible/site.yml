@@ -1,18 +1,25 @@
 ---
-- name: Setup Common Tasks & Gluster Install
+- name: Common Tasks
   hosts: servers
   become: yes
   roles:
     - common_tasks
-    - gluster_install
-  tags:
-    - common
 
 - name: Deploy User Setup 
   hosts: servers
   become: yes
   roles:
     - deployuser_setup
+  tags:
+    - deployuser_setup
+
+- name: Gluster Install
+  hosts: servers
+  become: yes
+  roles:
+    - gluster_install
+  tags:
+    - gluster_install
 
 - name: Probe nodes to form gluster pool
   hosts: swarm_managers[0]
@@ -34,6 +41,8 @@
   hosts: servers
   become: yes
   roles:
+    - gluster_mount_volume
+  tags:
     - gluster_mount_volume
 
 - name: Swarm Initialize

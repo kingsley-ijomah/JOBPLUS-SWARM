@@ -1,88 +1,98 @@
 ---
-  - name: Install software-properties-common
-    apt:
-      name: software-properties-common
-      state: latest
-    tags:
-      - proper_common
+  # - name: Install software-properties-common
+  #   apt:
+  #     name: software-properties-common
+  #     state: latest
+  #   tags:
+  #     - proper_common
 
-  - name: Set hostname to match inventory name
-    hostname:
-      name: '{{ inventory_hostname }}'
-    when: inventory_hostname in groups['servers']
-    tags:
-      - set_hostname
+  # - name: Set hostname to match inventory name
+  #   hostname:
+  #     name: '{{ inventory_hostname }}'
+  #   when: inventory_hostname in groups['servers']
+  #   tags:
+  #     - set_hostname
 
-  - name: Update /etc/hosts with localhost
-    lineinfile:
-      path: /etc/hosts
-      line: '127.0.0.1 {{ inventory_hostname }}'
-      regexp: '^127\.0\.0\.1 {{ inventory_hostname }}'
-      state: present
-    tags:
-      - update_hosts_local
+  # - name: Update /etc/hosts with localhost
+  #   lineinfile:
+  #     path: /etc/hosts
+  #     line: '127.0.0.1 {{ inventory_hostname }}'
+  #     regexp: '^127\.0\.0\.1 {{ inventory_hostname }}'
+  #     state: present
+  #   tags:
+  #     - update_hosts_local
 
-  - name: Update /etc/hosts with node IP and name
-    lineinfile:
-      path: /etc/hosts
-      line: '{{ hostvars[item].ansible_host }} {{ item }}'
-      regexp: '^{{ hostvars[item].ansible_host }} {{ item }}'
-      state: present
-    loop: "{{ groups['servers'] }}"
-    when: hostvars[item].ansible_host is defined
-    tags:
-      - update_hosts_other
+  # - name: Update /etc/hosts with node IP and name
+  #   lineinfile:
+  #     path: /etc/hosts
+  #     line: '{{ hostvars[item].ansible_host }} {{ item }}'
+  #     regexp: '^{{ hostvars[item].ansible_host }} {{ item }}'
+  #     state: present
+  #   loop: "{{ groups['servers'] }}"
+  #   when: hostvars[item].ansible_host is defined
+  #   tags:
+  #     - update_hosts_other
 
-  - name: Add GlusterFS PPA
-    apt_repository:
-      repo: ppa:gluster/glusterfs-11
-      update_cache: yes
-    tags:
-      - add_glusterfs_ppa
+  # - name: Add GlusterFS PPA
+  #   apt_repository:
+  #     repo: ppa:gluster/glusterfs-11
+  #     update_cache: yes
+  #   tags:
+  #     - add_glusterfs_ppa
 
-  - name: Install GlusterFS server
-    apt:
-      name: glusterfs-server
-      state: latest
-    tags:
-      - install_glusterfs
+  # - name: Install GlusterFS server
+  #   apt:
+  #     name: glusterfs-server
+  #     state: latest
+  #   tags:
+  #     - install_glusterfs
 
-  - name: Start GlusterFS service
-    systemd:
-      name: glusterd
-      state: started
-      enabled: yes
-    tags:
-      - start_glusterd
+  # - name: Start GlusterFS service
+  #   systemd:
+  #     name: glusterd
+  #     state: started
+  #     enabled: yes
+  #   tags:
+  #     - start_glusterd
 
-  - name: Enable GlusterFS service to start on boot
-    systemd:
-      name: glusterd
-      enabled: yes
-    tags:
-      - enable_glusterd
+  # - name: Enable GlusterFS service to start on boot
+  #   systemd:
+  #     name: glusterd
+  #     enabled: yes
+  #   tags:
+  #     - enable_glusterd
 
-  - name: Check GlusterFS service status
-    command: systemctl status glusterd
-    register: glusterd_status
-    tags:
-      - status_glusterd
+  # - name: Check GlusterFS service status
+  #   command: systemctl status glusterd
+  #   register: glusterd_status
+  #   tags:
+  #     - status_glusterd
 
-  - name: Display GlusterFS service status
+  # - name: Display GlusterFS service status
+  #   debug:
+  #     var: glusterd_status.stdout_lines
+  #   tags:
+  #     - status_glusterd
+
+  # - name: Create shared storage brick directory
+  #   file:
+  #     path: /data/bricks/shared_storage
+  #     state: directory
+  #     owner: root
+  #     group: root
+  #     mode: 0755
+  #   tags:
+  #     - create_brick_dir
+
+
+  - name: Check if deployuser exists
+    command: id deployuser
+    register: deployuser_check
+    ignore_errors: true
+
+  - name: Debug deployuser existence
     debug:
-      var: glusterd_status.stdout_lines
-    tags:
-      - status_glusterd
-
-  - name: Create shared storage brick directory
-    file:
-      path: /data/bricks/shared_storage
-      state: directory
-      owner: root
-      group: root
-      mode: 0755
-    tags:
-      - create_brick_dir
+      msg: "Deployuser exists: {{ 'deployuser_check.rc == 0' }}"
 
   - name: Create mount point for shared storage
     file:
@@ -93,3 +103,11 @@
       mode: 0755
     tags:
       - create_mount_point
+
+  - name: Get permissions of /mnt/shared_storage
+    command: stat -c "%U %G %A" /mnt/shared_storage
+    register: permissions_check
+
+  - name: Debug permissions of /mnt/shared_storage
+    debug:
+      msg: "Permissions of /mnt/shared_storage: {{ permissions_check.stdout }}"

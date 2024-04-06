@@ -26,3 +26,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Stack Deploy
+          ref: experimental

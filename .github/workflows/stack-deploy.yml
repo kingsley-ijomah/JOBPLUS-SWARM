@@ -10,6 +10,11 @@ jobs:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: experimental
+          
       - name: Deploy Changed Services
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\

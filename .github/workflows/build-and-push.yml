@@ -1,10 +1,10 @@
-name: Build and Push Images
+name: Build and Push
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-and-push-images:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:

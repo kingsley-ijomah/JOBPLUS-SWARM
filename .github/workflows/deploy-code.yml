@@ -42,6 +42,6 @@ jobs:
       - name: Trigger Deployment Workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: Build and Push Images
+          workflow: Build and Push
           ref: experimental  # Specify the branch where the workflow is located
   

@@ -8,7 +8,7 @@ on:
       - completed
 
 jobs:
-  build:
+  stack-deploy:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
@@ -17,6 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          fetch-depth: 2
           ref: experimental
 
       - name: Deploy Changed Services

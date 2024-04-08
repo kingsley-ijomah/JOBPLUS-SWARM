@@ -57,5 +57,5 @@ jobs:
 
       - name: Build and Push Nginx Docker Image
         run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:v1" -f services/nginx/Dockerfile services/nginx/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:v1"
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"

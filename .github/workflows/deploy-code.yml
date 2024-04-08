@@ -11,6 +11,7 @@ jobs:
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
 
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

@@ -1,7 +1,11 @@
 name: Build and Push
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy Code"]
+    branches: [experimental]
+    types:
+      - completed
 
 jobs:
   build-and-push:
@@ -22,8 +26,8 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      - name: Trigger Stack and Deploy Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Stack Deploy
-          ref: experimental
+      # - name: Trigger Stack and Deploy Workflow
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: Stack Deploy
+      #     ref: experimental

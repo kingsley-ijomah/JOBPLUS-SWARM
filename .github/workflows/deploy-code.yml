@@ -41,9 +41,9 @@ jobs:
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
 
-      - name: Trigger Build and Push Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Build and Push
+      # - name: Trigger Build and Push Workflow
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: Build and Push
 
     

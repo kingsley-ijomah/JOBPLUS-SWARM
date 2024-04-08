@@ -1,7 +1,11 @@
 name: Stack Deploy
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build and Push"]
+    branches: [experimental]
+    types:
+      - completed
 
 jobs:
   stack-deploy:

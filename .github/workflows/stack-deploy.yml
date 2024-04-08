@@ -8,7 +8,7 @@ on:
       - completed
 
 jobs:
-  stack-deploy:
+  build:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app

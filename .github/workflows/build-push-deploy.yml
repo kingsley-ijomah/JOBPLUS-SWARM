@@ -1,4 +1,4 @@
-name: Deploy Code
+name: Build Push Deploy
 
 on:
   push:
@@ -15,10 +15,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 2 # Shallow clone to have only the latest commit
           ref: experimental
 
-      # Copy code to manager node on server
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |
           mkdir -p ~/.ssh
@@ -41,22 +40,40 @@ jobs:
             rm -rf $APP_DIR_PATH/*
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
-      
-      # Build and Push images to Docker Hub
+
+  build-and-push:
+    needs: deploy-code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          ref: experimental
+
       - name: Log in to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-  
+
       - name: Build and Push Nginx Docker Image
         run: |
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
-      
-      # Deploy Changed Services Stack
+
+  deploy-services:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    env:
+      APP_DIR_PATH: /mnt/shared_storage/jobplus-app
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          ref: experimental
+          
       - name: Deploy Services Stack
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
           cd $APP_DIR_PATH && \
           docker stack deploy -c docker-compose.yml app_stack"
-
-    

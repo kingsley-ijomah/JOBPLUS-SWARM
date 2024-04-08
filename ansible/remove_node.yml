@@ -68,3 +68,67 @@
       ignore_errors: yes
       delegate_to: "{{ groups['swarm_managers'][0] }}"
       run_once: true
+
+- name: Safely remove a node from Docker Swarm
+  hosts: swarm_managers[0]
+  gather_facts: no
+  vars:
+    node_to_remove: '{{ node_to_remove }}'
+
+  tasks:
+    - name: Determine the leader manager node
+      ansible.builtin.shell: |
+        docker node ls --format "{{ '{{.Hostname}}' }} {{ '{{.ManagerStatus}}' }}" | grep 'Leader' | awk '{print $1}'
+      register: leader_manager
+      delegate_to: "{{ groups['swarm_managers'][0] }}"
+      run_once: true
+
+    - name: Ensure cluster maintains quorum - do not remove if last manager
+      ansible.builtin.fail:
+        msg: "Removing this node would breach cluster quorum. Operation aborted."
+      when: 
+        - node_to_remove == leader_manager.stdout
+      run_once: true
+
+    - name: Check if the node is part of Docker Swarm
+      ansible.builtin.shell:
+        cmd: "docker info --format '{{ '{{.Swarm.LocalNodeState}}' }}'"
+      delegate_to: "{{ node_to_remove }}" 
+      register: swarm_status
+      changed_when: false
+
+    - name: Drain node in Docker Swarm
+      ansible.builtin.shell: docker node update --availability drain {{ node_to_remove }}
+      delegate_to: "{{ groups['swarm_managers'][0] }}"
+      when: 
+        - node_to_remove != leader_manager.stdout
+        - swarm_status.stdout == 'active'
+
+    - name: Demote the node if it is a manager
+      ansible.builtin.shell:
+        cmd: "docker node demote {{ node_to_remove }}"
+      delegate_to: "{{ groups['swarm_managers'][0] }}"
+      when: 
+        - node_to_remove in groups['swarm_managers']
+        - node_to_remove != leader_manager.stdout
+        - swarm_status.stdout == 'active'
+
+    - name: Leave Docker Swarm
+      ansible.builtin.shell: docker swarm leave --force
+      delegate_to: '{{ node_to_remove }}'
+      when: 
+        - node_to_remove != leader_manager.stdout
+        - swarm_status.stdout == 'active'
+      ignore_errors: yes
+
+    - name: Remove node from the Swarm (run on a manager node)
+      ansible.builtin.shell: docker node rm --force {{ node_to_remove }}
+      delegate_to: "{{ groups['swarm_managers'][0] }}"
+      when: 
+        - node_to_remove != leader_manager.stdout
+        - swarm_status.stdout == 'active'
+      ignore_errors: yes
+
+    - name: Notice
+      ansible.builtin.debug:
+        msg: "Now you can safely remove {{ node_to_remove }} node using terraform"

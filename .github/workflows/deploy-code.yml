@@ -51,6 +51,12 @@ jobs:
         run: |
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
-
+      
+      # Deploy Changed Services Stack
+      - name: Deploy Services Stack
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
+          cd $APP_DIR_PATH && \
+          docker stack deploy -c docker-compose.yml app_stack"
 
     

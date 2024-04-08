@@ -5,10 +5,10 @@ FROM nginx:1.21.3
 RUN apt-get update && apt-get install -y inotify-tools
 
 # Remove all .conf Nginx configuration files as they will be regenerated
-RUN rm -f /etc/nginx/conf.d/*.conf
+# RUN rm -f /etc/nginx/conf.d/*.conf
 
 # Copy the template files
-COPY configs/http-template.conf /etc/nginx/templates/http-template.conf
+# COPY configs/http-template.conf /etc/nginx/templates/http-template.conf
 
 # Expose ports (Optional, as this is mainly for documentation purposes)
 EXPOSE 80

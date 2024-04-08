@@ -16,7 +16,7 @@ services:
       - shared_swarm_network
 
   visualizer:
-    image: dockersamples/visualizer
+    image: dockersamples/ 
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:

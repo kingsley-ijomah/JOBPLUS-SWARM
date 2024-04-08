@@ -10,15 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
-
-      
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
           ref: experimental
-        
+
+      # Copy code to manager node on server
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |
           mkdir -p ~/.ssh
@@ -41,10 +41,16 @@ jobs:
             rm -rf $APP_DIR_PATH/*
             git clone -b experimental ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
+      
+      # Build and Push images to Docker Hub
+      - name: Log in to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+  
+      - name: Build and Push Nginx Docker Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      # - name: Trigger Build and Push Workflow
-      #   uses: benc-uk/workflow-dispatch@v1
-      #   with:
-      #     workflow: Build and Push
 
     

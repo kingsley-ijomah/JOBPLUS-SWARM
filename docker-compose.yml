@@ -28,6 +28,8 @@ services:
 
   jobplus-postgres:
     image: yasilo8240/jobplus-postgres:latest
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: jobplus_user
       POSTGRES_PASSWORD: D3vB*tWsmP3@6#A!
@@ -37,6 +39,9 @@ services:
     deploy:
       placement:
         constraints: [node.role == worker]
+
+volumes:
+  postgres-data:
 
 networks:
   shared_swarm_network:

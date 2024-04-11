@@ -1,9 +1,14 @@
 FROM postgres:16.2
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y python3-pip && \
-    pip3 install --no-cache-dir psycopg2-binary patroni[etcd]
+# Install Python virtual environment
+RUN apt-get update && apt-get install -y python3-venv
+
+# Create a virtual environment
+RUN python3 -m venv /opt/venv
+
+# Install Patroni
+RUN . /opt/venv/bin/activate && \
+    pip install patroni[etcd] psycopg2-binary
 
 # Copy the configuration file
 COPY config/patroni.yml /etc/patroni/patroni.yml
@@ -19,5 +24,5 @@ ENV PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
 ENV PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/12/bin
 ENV PATRONI_POSTGRESQL_PG_REWIND="true"
 
-# Set the entrypoint to run Patroni
-ENTRYPOINT ["patroni", "/etc/patroni/patroni.yml"]
+# Activate the virtual environment and run Patroni
+ENTRYPOINT ["/bin/bash", "-c", "source /opt/venv/bin/activate && exec patroni /etc/patroni/patroni.yml"]

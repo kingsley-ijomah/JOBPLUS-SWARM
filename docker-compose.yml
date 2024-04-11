@@ -4,7 +4,7 @@ services:
   nginx:
     image: yasilo8240/jobplus-nginx:latest
     ports:
-      - '80:80'  # Expose Nginx on port 80
+      - '80:80' # Expose Nginx on port 80
     restart: always
     deploy:
       replicas: 3
@@ -19,7 +19,7 @@ services:
     image: dockersamples/visualizer
     # Removed ports: '8500:8080' to not expose directly
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - shared_swarm_network
     deploy:
@@ -29,7 +29,7 @@ services:
   jobplus-postgres:
     image: yasilo8240/jobplus-postgres:latest
     volumes:
-      - "/mnt/shared_storage/postgres-data:/var/lib/postgresql/data"
+      - '/mnt/shared_storage/postgres-data:/var/lib/postgresql/data'
     environment:
       POSTGRES_USER: jobplus_user
       POSTGRES_PASSWORD: D3vB*tWsmP3@6#A!
@@ -43,12 +43,30 @@ services:
   etcd:
     image: yasilo8240/jobplus-etcd:latest
     ports:
-      - "2379:2379"
+      - '2379:2379'
     networks:
       - shared_swarm_network
     deploy:
       placement:
         constraints: [node.role == manager]
+
+  patroni:
+    image: yasilo8240/jobplus-patroni:latest
+    volumes:
+      - '/mnt/shared_storage/postgres-data:/var/lib/postgresql/data'
+    environment:
+      PATRONI_NAME: jobplus-patroni
+      PATRONI_SUPERUSER_USERNAME: jobplus_user
+      PATRONI_SUPERUSER_PASSWORD: D3vB*tWsmP3@6#A!
+      PATRONI_REPLICATION_USERNAME: replicator
+      PATRONI_REPLICATION_PASSWORD: rep-pass
+    networks:
+      - shared_swarm_network
+    depends_on:
+      - etcd
+    deploy:
+      placement:
+        constraints: [node.role == worker]
 
 networks:
   shared_swarm_network:

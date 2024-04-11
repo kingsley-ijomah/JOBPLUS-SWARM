@@ -74,6 +74,11 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
 
+      - name: Build and Push Patroni Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-patroni:latest" -f services/patroni/Dockerfile services/patroni/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-patroni:latest"
+
   deploy-services:
     needs: build-and-push
     runs-on: ubuntu-latest

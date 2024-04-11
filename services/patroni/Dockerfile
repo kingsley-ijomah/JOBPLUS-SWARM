@@ -1,4 +1,4 @@
-FROM postgres::16.2
+FROM postgres:16.2
 
 # Install Patroni
 RUN apt-get update && apt-get install -y python3-pip && \

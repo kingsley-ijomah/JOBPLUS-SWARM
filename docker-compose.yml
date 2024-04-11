@@ -40,6 +40,14 @@ services:
       placement:
         constraints: [node.role == worker]
 
+  etcd:
+    image: yasilo8240/jobplus-etcd:latest
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
 networks:
   shared_swarm_network:
     external: true

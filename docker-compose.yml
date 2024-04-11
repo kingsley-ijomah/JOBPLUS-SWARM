@@ -29,7 +29,7 @@ services:
   jobplus-postgres:
     image: yasilo8240/jobplus-postgres:latest
     volumes:
-      - /mnt/shared_volume/postgres-data:/var/lib/postgresql/data
+      - "/mnt/shared_volume/postgres-data:/var/lib/postgresql/data"
     environment:
       POSTGRES_USER: jobplus_user
       POSTGRES_PASSWORD: D3vB*tWsmP3@6#A!

@@ -4,6 +4,8 @@
   become: yes
   roles:
     - common_tasks
+  tags:
+    - common_tasks
 
 - name: Deploy User Setup 
   hosts: servers

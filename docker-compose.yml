@@ -42,6 +42,8 @@ services:
 
   etcd:
     image: yasilo8240/jobplus-etcd:latest
+    ports:
+      - "2379:2379"
     networks:
       - shared_swarm_network
     deploy:

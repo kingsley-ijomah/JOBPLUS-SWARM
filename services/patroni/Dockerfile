@@ -1,8 +1,11 @@
 FROM postgres:16.2
 
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y python3-pip
+
 # Install Patroni
-RUN apt-get update && apt-get install -y python3-pip && \
-    pip3 install patroni[etcd]
+RUN pip3 install patroni[etcd]
 
 # Copy the configuration file
 COPY config/patroni.yml /etc/patroni/patroni.yml

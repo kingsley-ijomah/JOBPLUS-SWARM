@@ -71,7 +71,7 @@ jobs:
 
       - name: Build and Push Etcd Image
         run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/jobplus-etcd/Dockerfile services/jobplus-etcd/
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
 
   deploy-services:

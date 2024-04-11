@@ -1,11 +1,14 @@
 FROM postgres:16.2
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y python3-pip
+# Install Python virtual environment
+RUN apt-get update && apt-get install -y python3-venv
+
+# Create and activate a virtual environment
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Install Patroni
-RUN pip3 install patroni[etcd]
+RUN pip install patroni[etcd]
 
 # Copy the configuration file
 COPY config/patroni.yml /etc/patroni/patroni.yml

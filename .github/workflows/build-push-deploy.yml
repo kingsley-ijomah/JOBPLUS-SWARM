@@ -32,6 +32,9 @@ jobs:
           sudo mkdir -p $APP_DIR_PATH
           sudo chown -R deployuser:deployuser $APP_DIR_PATH
 
+          # make the directory for postgres
+          sudo mkdir -p $APP_DIR_PATH/postgres-data
+
           if [ -d $APP_DIR_PATH/.git ]; then
             git -C $APP_DIR_PATH clean -fd
             git -C $APP_DIR_PATH reset --hard HEAD

@@ -42,3 +42,4 @@ postgresql:
       password: secretpassword
   parameters:
     unix_socket_directories: '.'
+

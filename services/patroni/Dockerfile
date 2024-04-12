@@ -10,14 +10,16 @@ RUN python3 -m venv /opt/venv
 RUN . /opt/venv/bin/activate && \
     pip install patroni[etcd] psycopg2-binary
 
-# Create a non-root user 'patroniuser' inside the container
-RUN adduser --disabled-password --gecos '' patroniuser
+# Create a non-root user 'patroniuser' inside the container 
+# with specified UID and GID defined in patroni user setup ansible role
+RUN groupadd -g 10001 patronigroup && \
+    useradd -m -u 10001 -g patronigroup -s /bin/bash patroniuser
 
 # Switch to non-root user
 USER patroniuser
 
 # Copy the configuration file
-COPY config/patroni.yml /etc/patroni/patroni.yml
+COPY --chown=patroniuser:patronigroup config/patroni.yml /etc/patroni/patroni.yml
 
 # Set the environment variables
 ENV PATRONI_SCOPE=postgres

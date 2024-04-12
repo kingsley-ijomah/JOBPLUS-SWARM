@@ -68,8 +68,8 @@ services:
       - etcd
     deploy:
       replicas: 3 # Run three instances for high availability
-      # placement:
-      #   constraints: [node.role == worker]
+      placement:
+        constraints: [node.role == worker]
 
 networks:
   shared_swarm_network:

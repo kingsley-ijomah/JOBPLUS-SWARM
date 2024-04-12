@@ -1,13 +1,17 @@
 FROM postgres:16.2
 
-# Install Python, pip, and curl
-RUN apt-get update && apt-get install -y python3 python3-pip curl && \
-    rm -rf /var/lib/apt/lists/*
+# Update and install necessary system packages
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Patroni and psycopg2-binary globally
-RUN pip3 install patroni[etcd] psycopg2-binary
+RUN pip3 install --upgrade pip && \
+    pip3 install --system patroni[etcd] psycopg2-binary
 
-# Create a non-root user 'patroniuser' inside the container
+# Create a non-root user 'patroniuser' inside the container 
 # with specified UID and GID defined in patroni user setup ansible role
 RUN groupadd -g 10001 patronigroup && \
     useradd -m -u 10001 -g patronigroup -s /bin/bash patroniuser
@@ -29,5 +33,5 @@ ENV PATRONI_SCOPE=postgres \
     PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/16/bin \
     PATRONI_POSTGRESQL_PG_REWIND="true"
 
-# Run Patroni
-ENTRYPOINT ["patroni", "/etc/patroni/patroni.yml"]
+# Activate and run Patroni
+ENTRYPOINT ["/bin/bash", "-c", "exec patroni /etc/patroni/patroni.yml"]

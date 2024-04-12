@@ -1,0 +1,14 @@
+{
+  "service": {
+    "name": "postgresql",
+    "tags": ["primary"],
+    "port": 5432,
+    "check": {
+      "id": "postgres",
+      "name": "PostgreSQL TCP Check",
+      "tcp": "localhost:5432",
+      "interval": "10s",
+      "timeout": "1s"
+    }
+  }
+}

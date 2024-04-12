@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
-      # POSTGRES_DATA_PATH: /mnt/shared_storage/postgres-data
 
     steps:
       - name: Checkout repository
@@ -64,20 +63,10 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      # - name: Build and Push Postgres Image
-      #   run: |
-      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest" -f services/jobplus-postgres/Dockerfile services/jobplus-postgres/
-      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest"
-
-      - name: Build and Push Etcd Image
+      - name: Build and Push Consul Image
         run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
-
-      - name: Build and Push Patroni Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-patroni:latest" -f services/patroni/Dockerfile services/patroni/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-patroni:latest"
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest" -f services/consul/Dockerfile services/consul/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest"
 
   deploy-services:
     needs: build-and-push

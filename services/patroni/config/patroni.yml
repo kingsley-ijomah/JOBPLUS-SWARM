@@ -31,24 +31,6 @@ bootstrap:
       hot_standby: on
       track_commit_timestamp: off
 
-# bootstrap:
-#   dcs:
-#     ttl: 30
-#     loop_wait: 10
-#     retry_timeout: 10
-#     maximum_lag_on_failover: 1048576
-#     postgresql:
-#       use_pg_rewind: true
-#       use_slots: true
-#       parameters:
-#         max_connections: 100
-#   initdb:
-#     - encoding: UTF8
-#     - data-checksums
-#   pg_hba:
-#     - host replication replicator 127.0.0.1/32 md5
-#     - host all all 0.0.0.0/0 md5
-
 postgresql:
   listen: 0.0.0.0:5432
   connect_address: localhost:5432

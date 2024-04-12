@@ -1,17 +1,16 @@
 FROM postgres:16.2
 
-# Install Python virtual environment
-RUN apt-get update && apt-get install -y python3-venv
-
-# Install curl
-RUN apt-get update && apt-get install -y curl
+# Install Python virtual environment and curl
+RUN apt-get update && apt-get install -y python3-venv curl && rm -rf /var/lib/apt/lists/*
 
 # Create a virtual environment
 RUN python3 -m venv /opt/venv
 
 # Install Patroni
-RUN . /opt/venv/bin/activate && \
-    pip install patroni[etcd] psycopg2-binary
+RUN /opt/venv/bin/pip install patroni[etcd] psycopg2-binary
+
+# Setup the PATH to include the virtual environment binaries
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Create a non-root user 'patroniuser' inside the container 
 # with specified UID and GID defined in patroni user setup ansible role
@@ -25,15 +24,15 @@ USER patroniuser
 COPY --chown=patroniuser:patronigroup config/patroni.yml /etc/patroni/patroni.yml
 
 # Set the environment variables
-ENV PATRONI_SCOPE=postgres
-ENV PATRONI_RESTAPI_CONNECT_ADDRESS=patroni:8008
-ENV PATRONI_RESTAPI_LISTEN=0.0.0.0:8008
-ENV PATRONI_ETCD_URL=http://etcd:2379
-ENV PATRONI_POSTGRESQL_CONNECT_ADDRESS=localhost:5432
-ENV PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
-ENV PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
-ENV PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/16/bin
-ENV PATRONI_POSTGRESQL_PG_REWIND="true"
+ENV PATRONI_SCOPE=postgres \
+    PATRONI_RESTAPI_CONNECT_ADDRESS=patroni:8008 \
+    PATRONI_RESTAPI_LISTEN=0.0.0.0:8008 \
+    PATRONI_ETCD_URL=http://etcd:2379 \
+    PATRONI_POSTGRESQL_CONNECT_ADDRESS=localhost:5432 \
+    PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data \
+    PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432 \
+    PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/16/bin \
+    PATRONI_POSTGRESQL_PG_REWIND="true"
 
 # Activate the virtual environment and run Patroni
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/venv/bin/activate && exec patroni /etc/patroni/patroni.yml"]

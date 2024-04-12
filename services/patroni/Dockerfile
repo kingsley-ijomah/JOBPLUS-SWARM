@@ -10,8 +10,11 @@ RUN python3 -m venv /opt/venv
 RUN . /opt/venv/bin/activate && \
     pip install patroni[etcd] psycopg2-binary
 
+# Create a non-root user 'patroniuser' inside the container
+RUN adduser --disabled-password --gecos '' patroniuser
+
 # Switch to non-root user
-USER postgres
+USER patroniuser
 
 # Copy the configuration file
 COPY config/patroni.yml /etc/patroni/patroni.yml

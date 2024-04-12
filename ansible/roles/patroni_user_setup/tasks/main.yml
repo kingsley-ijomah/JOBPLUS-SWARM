@@ -1,0 +1,38 @@
+---
+- name: Create Patroni user
+  ansible.builtin.user:
+    name: patroniuser
+    shell: /bin/bash
+    create_home: yes
+    system: no
+
+- name: Set ownership of PostgreSQL data directory to Patroni user
+  ansible.builtin.file:
+    path: /mnt/shared_storage/postgres-data
+    state: directory
+    owner: patroniuser
+    group: patroniuser
+    mode: '0750' # Adjust permissions as necessary for your setup
+
+- name: Add Patroni user to docker group
+  ansible.builtin.user:
+    name: patroniuser
+    groups: docker
+    append: yes
+
+- name: Create .ssh directory for Patroni user
+  ansible.builtin.file:
+    path: /home/patroniuser/.ssh
+    state: directory
+    owner: patroniuser
+    group: patroniuser
+    mode: '0700'
+
+- name: Copy authorized_keys for Patroni user on remote
+  ansible.builtin.copy:
+    src: /root/.ssh/authorized_keys # Assuming you want to use the same keys
+    dest: /home/patroniuser/.ssh/authorized_keys
+    owner: patroniuser
+    group: patroniuser
+    mode: '0600'
+    remote_src: yes

@@ -7,12 +7,12 @@
   tags:
     - common_tasks
 
-- name: Deploy User Setup 
+- name: Deploy User Setup
   hosts: servers
   become: yes
   roles:
     - deployuser_setup
-    
+
 - name: Gluster Install
   hosts: servers
   become: yes
@@ -21,7 +21,7 @@
 
 - name: Probe nodes to form gluster pool
   hosts: swarm_managers[0]
-  become: yes 
+  become: yes
   roles:
     - gluster_probe
   tags:
@@ -41,6 +41,14 @@
   roles:
     - gluster_mount_volume
 
+- name: Patroni User Setup
+  hosts: servers
+  become: yes
+  roles:
+    - patroni_user_setup
+  tags:
+    - patroni_user_setup
+
 - name: Swarm Initialize
   hosts: swarm_managers[0]
   become: yes
@@ -51,16 +59,16 @@
 
 - name: Join Swarm as workers
   hosts: swarm_workers
-  become: yes 
-  roles: 
-    - join_swarm 
+  become: yes
+  roles:
+    - join_swarm
   tags:
     - add_workers_to_swarm
 
 - name: Join Swarm as managers
   hosts: swarm_managers
-  become: yes 
-  roles: 
-    - join_swarm 
+  become: yes
+  roles:
+    - join_swarm
   tags:
     - add_managers_to_swarm

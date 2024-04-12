@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_DIR_PATH: /mnt/shared_storage/jobplus-app
-      POSTGRES_DATA_PATH: /mnt/shared_storage/postgres-data
+      # POSTGRES_DATA_PATH: /mnt/shared_storage/postgres-data
 
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
           sudo chown -R deployuser:deployuser $APP_DIR_PATH
 
           # make the directory for postgres as root user
-          sudo mkdir -p $POSTGRES_DATA_PATH
+          # sudo mkdir -p $POSTGRES_DATA_PATH
 
           if [ -d $APP_DIR_PATH/.git ]; then
             git -C $APP_DIR_PATH clean -fd

@@ -1,7 +1,15 @@
-FROM quay.io/coreos/etcd:v3.3
+FROM ubuntu:20.04
+
+# Install etcd
+RUN apt-get update && apt-get install -y wget && \
+    wget https://github.com/etcd-io/etcd/releases/download/v3.3.25/etcd-v3.3.25-linux-amd64.tar.gz && \
+    tar -xvf etcd-v3.3.25-linux-amd64.tar.gz && \
+    mv etcd-v3.3.25-linux-amd64/etcd* /usr/local/bin/ && \
+    rm -rf etcd-v3.3.25-linux-amd64* && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user and group for etcd to enhance security
-# reuse GID and UID from etcd_setup ansible role
 RUN groupadd -g 10002 etcdgroup && \
     useradd -m -u 10002 -g etcdgroup -s /bin/bash etcduser
 

@@ -10,6 +10,9 @@ RUN python3 -m venv /opt/venv
 RUN . /opt/venv/bin/activate && \
     pip install patroni[etcd] psycopg2-binary
 
+# Switch to non-root user
+USER postgres
+
 # Copy the configuration file
 COPY config/patroni.yml /etc/patroni/patroni.yml
 

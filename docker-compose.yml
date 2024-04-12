@@ -28,6 +28,7 @@ services:
 
   consul:
     image: yasilo8240/jobplus-consul:latest
+    command: ["consul", "agent", "-server", "-bootstrap-expect=1", "-config-dir=/consul/config"]
     volumes:
       - '/mnt/shared_storage/consul-data:/consul/data'
     ports:

@@ -3,6 +3,9 @@ FROM postgres:16.2
 # Install Python virtual environment
 RUN apt-get update && apt-get install -y python3-venv
 
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
 # Create a virtual environment
 RUN python3 -m venv /opt/venv
 

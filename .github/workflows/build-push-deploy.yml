@@ -64,10 +64,10 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      - name: Build and Push Postgres Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest" -f services/jobplus-postgres/Dockerfile services/jobplus-postgres/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest"
+      # - name: Build and Push Postgres Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest" -f services/jobplus-postgres/Dockerfile services/jobplus-postgres/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-postgres:latest"
 
       - name: Build and Push Etcd Image
         run: |

@@ -41,6 +41,14 @@
   roles:
     - gluster_mount_volume
 
+- name: Etcd Setup
+  hosts: servers
+  become: yes
+  roles:
+    - etcd_setup
+  tags:
+    - etcd_setup
+
 - name: Patroni User Setup
   hosts: servers
   become: yes

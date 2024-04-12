@@ -30,6 +30,12 @@ services:
     image: yasilo8240/jobplus-etcd:latest
     ports:
       - '2379:2379'
+    volumes:
+      - '/mnt/shared_storage/etcd-data:/etcd-data'
+    environment:
+      ETCD_DATA_DIR: /etcd-data  # Telling Etcd to use the mounted directory
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
     networks:
       - shared_swarm_network
     deploy:

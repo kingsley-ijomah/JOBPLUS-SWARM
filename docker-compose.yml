@@ -57,7 +57,7 @@ services:
     volumes:
       - '/mnt/shared_storage/postgres-data:/var/lib/postgresql/data'
     environment:
-      PATRONI_NAME: jobplus-patroni
+      PATRONI_NAME: "{{.Service.Name}}-{{.Task.Slot}}"
       PATRONI_SUPERUSER_USERNAME: jobplus_user
       PATRONI_SUPERUSER_PASSWORD: D3vB*tWsmP3@6#A!
       PATRONI_REPLICATION_USERNAME: replicator
@@ -67,6 +67,7 @@ services:
     depends_on:
       - etcd
     deploy:
+      replicas: 3  # Run three instances for high availability
       placement:
         constraints: [node.role == worker]
 

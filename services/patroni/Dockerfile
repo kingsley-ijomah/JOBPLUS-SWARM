@@ -21,7 +21,7 @@ ENV PATRONI_ETCD_URL=http://etcd:2379
 ENV PATRONI_POSTGRESQL_CONNECT_ADDRESS=localhost:5432
 ENV PATRONI_POSTGRESQL_DATA_DIR=/var/lib/postgresql/data
 ENV PATRONI_POSTGRESQL_LISTEN=0.0.0.0:5432
-ENV PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/12/bin
+ENV PATRONI_POSTGRESQL_BIN_DIR=/usr/lib/postgresql/16/bin
 ENV PATRONI_POSTGRESQL_PG_REWIND="true"
 
 # Activate the virtual environment and run Patroni

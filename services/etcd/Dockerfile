@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
 # Create a non-root user and group for etcd to enhance security
 RUN groupadd -g 10002 etcdgroup && \
     useradd -m -u 10002 -g etcdgroup -s /bin/bash etcduser

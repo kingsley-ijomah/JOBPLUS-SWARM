@@ -1,5 +1,5 @@
 {
-  "data_dir": "/consul/data",
+  "data_dir": "/consul-data",
   "service": {
     "name": "postgresql",
     "tags": ["primary"],

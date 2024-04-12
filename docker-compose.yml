@@ -30,7 +30,7 @@ services:
     image: yasilo8240/jobplus-consul:latest
     command: ["consul", "agent", "-server", "-bootstrap-expect=1", "-config-dir=/consul/config"]
     volumes:
-      - '/mnt/shared_storage/consul-data:/consul/data'
+      - '/mnt/shared_storage/consul-data:/consul-data'
     ports:
       - '8500:8500' # Expose the Consul UI and API port
       - '8600:8600/udp' # DNS interface

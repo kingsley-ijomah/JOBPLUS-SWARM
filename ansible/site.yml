@@ -41,22 +41,14 @@
   roles:
     - gluster_mount_volume
 
-- name: Etcd Setup
+- name: Consul Setup
   hosts: servers
   become: yes
   roles:
-    - etcd_setup
+    - consul_setup
   tags:
-    - etcd_setup
-
-- name: Patroni User Setup
-  hosts: servers
-  become: yes
-  roles:
-    - patroni_user_setup
-  tags:
-    - patroni_user_setup
-
+    - consul_setup
+    
 - name: Swarm Initialize
   hosts: swarm_managers[0]
   become: yes

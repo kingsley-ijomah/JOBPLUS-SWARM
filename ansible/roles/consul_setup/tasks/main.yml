@@ -1,0 +1,46 @@
+---
+- name: Ensure group exists for Consul
+  ansible.builtin.group:
+    name: consulgroup
+    gid: 10003
+
+- name: Create Consul user with specific UID and GID
+  ansible.builtin.user:
+    name: consuluser
+    shell: /bin/bash
+    create_home: yes
+    uid: 10003
+    group: consulgroup
+    system: no
+
+- name: Set ownership of Consul data directory
+  ansible.builtin.file:
+    path: /mnt/shared_storage/consul-data
+    state: directory
+    owner: consuluser
+    group: consulgroup
+    mode: '0750'
+
+- name: Add Consul user to docker group
+  ansible.builtin.user:
+    name: consuluser
+    groups:
+      - docker
+    append: yes
+
+- name: Create .ssh directory for Consul user
+  ansible.builtin.file:
+    path: /home/consuluser/.ssh
+    state: directory
+    owner: consuluser
+    group: consulgroup
+    mode: '0700'
+
+- name: Copy authorized_keys for Consul user on remote
+  ansible.builtin.copy:
+    src: /root/.ssh/authorized_keys
+    dest: /home/consuluser/.ssh/authorized_keys
+    owner: consuluser
+    group: consulgroup
+    mode: '0600'
+    remote_src: yes

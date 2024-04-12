@@ -10,6 +10,16 @@ RUN apt-get update && apt-get install -y unzip jq && \
     rm /tmp/consul.zip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Create a non-root user and group for consul to enhance security
+# with specified UID and GID defined in consul setup ansible role
+RUN groupadd -g 10003 consulgroup && \
+    useradd -m -u 10003 -g consulgroup -s /bin/bash consuluser
+
+# Create directory for consul data and set permissions
+RUN mkdir /consul-data && \
+    chown consuluser:consulgroup /consul-data && \
+    chmod 700 /consul-data
+
 # Copy Consul configuration JSON
 COPY config/consul-config.json /consul/config/consul-config.json
 

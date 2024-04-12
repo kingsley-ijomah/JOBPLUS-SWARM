@@ -28,6 +28,8 @@ services:
 
   consul:
     image: yasilo8240/jobplus-consul:latest
+    volumes:
+      - '/mnt/shared_storage/consul-data:/consul/data'
     ports:
       - '8500:8500' # Expose the Consul UI and API port
       - '8600:8600/udp' # DNS interface

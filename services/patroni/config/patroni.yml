@@ -4,7 +4,7 @@ name: postgresql0
 
 restapi:
   listen: 0.0.0.0:8008
-  connect_address: localhost:8008
+  connect_address: patroni:8008
 
 etcd:
   host: etcd:2379

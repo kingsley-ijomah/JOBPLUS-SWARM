@@ -3,7 +3,7 @@ FROM quay.io/coreos/etcd:v3.3
 # Create a non-root user and group for etcd to enhance security
 # reuse GID and UID from etcd_setup ansible role
 RUN groupadd -g 10002 etcdgroup && \
-    useradd -r -g etcdgroup -u 10002 etcduser
+    useradd -m -u 10002 -g etcdgroup -s /bin/bash etcduser
 
 # Create directory for etcd data and set permissions
 RUN mkdir /etcd-data && \

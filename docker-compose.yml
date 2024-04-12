@@ -51,6 +51,7 @@ services:
         constraints: [node.role == manager]
 
   patroni:
+    user: postgres:postgres
     image: yasilo8240/jobplus-patroni:latest
     ports:
       - '8008:8008'

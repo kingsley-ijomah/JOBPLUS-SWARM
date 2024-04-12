@@ -52,6 +52,8 @@ services:
 
   patroni:
     image: yasilo8240/jobplus-patroni:latest
+    ports:
+      - '8008:8008'
     volumes:
       - '/mnt/shared_storage/postgres-data:/var/lib/postgresql/data'
     environment:

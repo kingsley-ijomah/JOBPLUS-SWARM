@@ -86,6 +86,12 @@ services:
     networks:
       - shared_swarm_network
 
+  # Managing Stolon clusters, providing operational control.
+  stolon-ctl:
+    image: yasilo8240/jobplus-stolon-ctl:latest
+    networks:
+      - shared_swarm_network
+
 volumes:
   stolon_data:
 

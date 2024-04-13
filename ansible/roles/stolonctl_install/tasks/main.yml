@@ -1,0 +1,19 @@
+---
+# Tasks for installing stolonctl
+- name: Download Stolonctl tarball
+  get_url:
+    url: "{{ stolon_release_url }}"
+    dest: "/tmp/stolon-{{ stolon_version }}-linux-amd64.tar.gz"
+    mode: '0644'
+
+- name: Extract Stolonctl tarball
+  unarchive:
+    src: "/tmp/stolon-{{ stolon_version }}-linux-amd64.tar.gz"
+    dest: "/tmp"
+    remote_src: yes
+    extra_opts: ["--strip-components=1"]
+
+- name: Move Stolonctl binaries to the install directory
+  command: mv /tmp/bin/stolonctl {{ stolon_install_dir }}
+  args:
+    creates: "{{ stolon_install_dir }}/stolonctl"

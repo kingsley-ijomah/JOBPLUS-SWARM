@@ -1,0 +1,5 @@
+---
+# Default variables for stolonctl installation
+stolon_version: "v0.16.0"
+stolon_release_url: "https://github.com/sorintlab/stolon/releases/download/{{ stolon_version }}/stolon-{{ stolon_version }}-linux-amd64.tar.gz"
+stolon_install_dir: "/usr/local/bin"

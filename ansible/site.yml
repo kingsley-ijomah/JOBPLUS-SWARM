@@ -48,7 +48,15 @@
     - etcd_setup
   tags:
     - etcd_setup
-    
+
+- name: Install Stolonctl
+  hosts: swarm_managers
+  become: yes
+  roles:
+    - stolonctl_install
+  tags:
+    - stolonctl_install
+
 - name: Swarm Initialize
   hosts: swarm_managers[0]
   become: yes

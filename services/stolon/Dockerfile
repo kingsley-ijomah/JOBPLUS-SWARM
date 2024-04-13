@@ -9,17 +9,19 @@ RUN apt-get update && \
     apt-get install -y curl unzip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Stolon
-RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}/stolon-${STOLON_VERSION}-linux-amd64.tar.gz | tar -xz -C /usr/local/bin --strip-components=1
+# Download and extract Stolon
+RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}/stolon-${STOLON_VERSION}-linux-amd64.tar.gz -o stolon.tar.gz && \
+    mkdir -p /stolon-installation && \
+    tar -xzf stolon.tar.gz -C /stolon-installation && \
+    ls /stolon-installation && \
+    mv /stolon-installation/*/bin/* /usr/local/bin/
 
-# Verify binary installation and add to PATH if necessary
-RUN ls /usr/local/bin/stolon-* && \
-    ln -s /usr/local/bin/stolon-keeper /usr/local/bin/stolon-keeper && \
-    ln -s /usr/local/bin/stolon-sentinel /usr/local/bin/stolon-sentinel && \
-    ln -s /usr/local/bin/stolon-proxy /usr/local/bin/stolon-proxy
+# Clean up installation files
+RUN rm -rf /stolon-installation stolon.tar.gz && \
+    apt-get purge -y --auto-remove curl unzip
 
-# Clean up unnecessary files
-RUN apt-get purge -y --auto-remove curl unzip
+# Verify binaries are in the expected location
+RUN ls /usr/local/bin/stolon-*
 
 # Set up the environment variables
 ENV STOLONCTL_CLUSTER_NAME stolon-cluster

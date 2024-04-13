@@ -7,18 +7,14 @@ ENV STOLON_VERSION v0.17.0
 # Install necessary packages
 RUN apt-get update && \
     apt-get install -y curl unzip && \
-    rm -rf /var/lib/apt/lists/*
-
-# Download and extract Stolon
-RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}/stolon-${STOLON_VERSION}-linux-amd64.tar.gz -o stolon.tar.gz && \
+    rm -rf /var/lib/apt/lists/* \
+    curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}/stolon-${STOLON_VERSION}-linux-amd64.tar.gz -o stolon.tar.gz && \
     mkdir -p /stolon-installation && \
     tar -xzf stolon.tar.gz -C /stolon-installation && \
     ls /stolon-installation && \
-    mv /stolon-installation/*/bin/* /usr/local/bin/
-
-# Clean up installation files
-RUN rm -rf /stolon-installation stolon.tar.gz && \
-    apt-get purge -y --auto-remove curl unzip
+    mv /stolon-installation/*/bin/* /usr/local/bin/ \
+    rm -rf /stolon-installation stolon.tar.gz && \
+    apt-get purge -y --auto-remove unzip
 
 # Verify binaries are in the expected location
 RUN ls /usr/local/bin/stolon-*

@@ -7,11 +7,13 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 # Initialize the database system and create users
 if [ "$ROLE" = "keeper" ] && [ ! -d "$STKEEPER_DATA_DIR" ]; then
-    gosu postgres pg_ctl init
-    gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" -o "-c listen_addresses='localhost'" start
+    echo "Initializing PostgreSQL data directory..."
+    gosu postgres pg_ctl init -D "$STKEEPER_DATA_DIR"
+    gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" -o "-c listen_addresses='*'" start
+    sleep 5  # Give PostgreSQL a few seconds to start
     gosu postgres psql -c "CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';"
     gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
-    gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" stop
+    # Do not stop PostgreSQL here; let it continue running
 fi
 
 case "$ROLE" in

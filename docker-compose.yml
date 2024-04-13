@@ -91,6 +91,9 @@ services:
     image: yasilo8240/jobplus-stolon-ctl:latest
     networks:
       - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
 volumes:
   stolon_data:

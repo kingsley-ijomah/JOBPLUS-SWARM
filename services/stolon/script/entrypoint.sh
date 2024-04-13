@@ -14,7 +14,9 @@ case "$ROLE" in
       --store-endpoints $STOLONCTL_STORE_URL \
       --pg-listen-address $IP_ADDRESS \
       --pg-repl-username $PG_REPL_USERNAME \
-      --pg-repl-password $PG_REPL_PASSWORD
+      --pg-repl-password $PG_REPL_PASSWORD \
+      --pg-su-username $PG_SU_USERNAME \
+      --pg-su-password $PG_SU_PASSWORD
     ;;
   "sentinel")
     exec stolon-sentinel \

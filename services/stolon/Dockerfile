@@ -12,6 +12,12 @@ RUN apt-get update && \
 # Install Stolon
 RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}/stolon-${STOLON_VERSION}-linux-amd64.tar.gz | tar -xz -C /usr/local/bin --strip-components=1
 
+# Verify binary installation and add to PATH if necessary
+RUN ls /usr/local/bin/stolon-* && \
+    ln -s /usr/local/bin/stolon-keeper /usr/local/bin/stolon-keeper && \
+    ln -s /usr/local/bin/stolon-sentinel /usr/local/bin/stolon-sentinel && \
+    ln -s /usr/local/bin/stolon-proxy /usr/local/bin/stolon-proxy
+
 # Clean up unnecessary files
 RUN apt-get purge -y --auto-remove curl unzip
 

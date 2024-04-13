@@ -54,6 +54,8 @@ services:
       - PG_SU_PASSWORD=postgres
     volumes:
       - stolon_data:/stolon-data
+    networks:
+      - shared_swarm_network
 
   # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
   stolon-sentinel:
@@ -65,6 +67,8 @@ services:
       - STOLONCTL_STORE_URL=http://etcd:2379
     depends_on:
       - etcd
+    networks:
+      - shared_swarm_network
 
   # Proxies SQL client connections to the appropriate PostgreSQL server.
   stolon-proxy:
@@ -78,6 +82,8 @@ services:
       - '5432:5432'
     depends_on:
       - etcd
+    networks:
+      - shared_swarm_network
 
 volumes:
   stolon_data:

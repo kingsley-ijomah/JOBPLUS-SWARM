@@ -25,22 +25,18 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-
-  consul:
-    image: yasilo8240/jobplus-consul:latest
-    command: ["consul", "agent", "-server", "-bootstrap-expect=1", "-config-dir=/consul/config"]
-    volumes:
-      - '/mnt/shared_storage/consul-data:/consul-data'
+  
+  etcd:
+    image: yasilo8240/jobplus-etcd:latest
     ports:
-      - '8500:8500' # Expose the Consul UI and API port
-      - '8600:8600/udp' # DNS interface
-    environment:
-      CONSUL_BIND_INTERFACE: 'eth0'
+      - "2379:2379"
+    volumes:
+      - '/mnt/shared_storage/etcd-data:/etcd-data'
     networks:
       - shared_swarm_network
     deploy:
       placement:
-        constraints: [node.role == worker]
+        constraints: [node.role == manager]
 
 networks:
   shared_swarm_network:

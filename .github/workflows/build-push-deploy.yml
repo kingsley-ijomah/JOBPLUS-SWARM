@@ -63,10 +63,10 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      - name: Build and Push Consul Image
+      - name: Build and Push Etcd Image
         run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest" -f services/consul/Dockerfile services/consul/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest"
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
 
   deploy-services:
     needs: build-and-push

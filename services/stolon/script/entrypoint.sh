@@ -9,10 +9,10 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 if [ "$ROLE" = "keeper" ] && [ ! -d "$STKEEPER_DATA_DIR" ]; then
     gosu postgres pg_ctl init
     # Use psql to execute SQL commands
-    gosu postgres postgres --single <<- EOSQL
+    gosu postgres postgres --single <<-EOSQL
         CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';
         CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';
-    EOSQL
+EOSQL
 fi
 
 case "$ROLE" in

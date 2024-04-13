@@ -8,11 +8,10 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 # Initialize the database system and create users
 if [ "$ROLE" = "keeper" ] && [ ! -d "$STKEEPER_DATA_DIR" ]; then
     gosu postgres pg_ctl init
-    # Use psql to execute SQL commands
-    gosu postgres postgres --single <<-EOSQL
-        CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';
-        CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';
-EOSQL
+    gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" -o "-c listen_addresses='localhost'" start
+    gosu postgres psql -c "CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';"
+    gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
+    gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" stop
 fi
 
 case "$ROLE" in

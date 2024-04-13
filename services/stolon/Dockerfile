@@ -13,8 +13,7 @@ RUN apt-get update && \
     tar -xzf stolon.tar.gz -C /stolon-installation && \
     ls /stolon-installation && \
     mv /stolon-installation/*/bin/* /usr/local/bin/ \
-    rm -rf /stolon-installation stolon.tar.gz && \
-    apt-get purge -y --auto-remove unzip
+    rm -rf /stolon-installation stolon.tar.gz
 
 # Verify binaries are in the expected location
 RUN ls /usr/local/bin/stolon-*

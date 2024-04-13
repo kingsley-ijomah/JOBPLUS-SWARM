@@ -6,7 +6,7 @@ echo "Starting Stolon as a $ROLE..."
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 # Initialize the database system and create users
-if [ "$ROLE" = "keeper" ] && [ ! -d "$STKEEPER_DATA_DIR" ]; then
+if [ "$ROLE" = "keeper" ]; then
     echo "Initializing PostgreSQL data directory..."
     gosu postgres pg_ctl init -D "$STKEEPER_DATA_DIR"
     gosu postgres pg_ctl -D "$STKEEPER_DATA_DIR" -o "-c listen_addresses='*'" start

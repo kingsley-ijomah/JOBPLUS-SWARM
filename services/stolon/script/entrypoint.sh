@@ -8,11 +8,13 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 case "$ROLE" in
   "keeper")
     exec stolon-keeper \
-      --data-dir /stolon-data \
+      --data-dir $STKEEPER_DATA_DIR \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL \
-      --pg-listen-address $IP_ADDRESS
+      --pg-listen-address $IP_ADDRESS \
+      --pg-repl-username $PG_REPL_USERNAME \
+      --pg-repl-password $PG_REPL_PASSWORD
     ;;
   "sentinel")
     exec stolon-sentinel \

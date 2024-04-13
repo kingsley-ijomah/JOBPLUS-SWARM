@@ -47,6 +47,9 @@ services:
       - STOLONCTL_CLUSTER_NAME=stolon-cluster
       - STOLONCTL_STORE_BACKEND=etcd
       - STOLONCTL_STORE_URL=http://etcd:2379
+      - STKEEPER_DATA_DIR=/stolon-data
+      - PG_REPL_USERNAME=repluser
+      - PG_REPL_PASSWORD=replpass
     volumes:
       - stolon_data:/stolon-data
 

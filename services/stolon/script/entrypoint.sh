@@ -5,6 +5,16 @@ echo "Starting Stolon as a $ROLE..."
 # Fetch the IP address of the container
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
+# Initialize the database system and create users
+if [ "$ROLE" = "keeper" ] && [ ! -d "$STKEEPER_DATA_DIR" ]; then
+    gosu postgres pg_ctl init
+    # Use psql to execute SQL commands
+    gosu postgres postgres --single <<- EOSQL
+        CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';
+        CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';
+    EOSQL
+fi
+
 case "$ROLE" in
   "keeper")
     exec stolon-keeper \

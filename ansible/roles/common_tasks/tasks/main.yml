@@ -69,21 +69,3 @@
   become: yes
   tags:
     - python_docker
-
-- name: Download etcdctl binary
-  get_url:
-    url: 'https://github.com/etcd-io/etcd/releases/download/v3.3.25/etcd-v3.3.25-linux-amd64.tar.gz'
-    dest: '/tmp/etcd-v3.3.25-linux-amd64.tar.gz'
-    mode: '0644'
-
-- name: Extract etcdctl binary
-  unarchive:
-    src: '/tmp/etcd-v3.3.25-linux-amd64.tar.gz'
-    dest: '/tmp'
-    remote_src: yes
-    creates: '/tmp/etcd-v3.3.25-linux-amd64'
-
-- name: Move etcdctl to /usr/local/bin
-  command: mv /tmp/etcd-v3.3.25-linux-amd64/etcdctl /usr/local/bin/etcdctl
-  args:
-    creates: /usr/local/bin/etcdctl

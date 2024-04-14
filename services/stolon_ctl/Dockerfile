@@ -23,5 +23,12 @@ ENV PATH=$PATH:${INSTALL_PATH}
 # Set the working directory
 WORKDIR /root
 
+# Copy the entrypoint script
+COPY script/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+
 # Command to keep the container running
 CMD ["tail", "-f", "/dev/null"]

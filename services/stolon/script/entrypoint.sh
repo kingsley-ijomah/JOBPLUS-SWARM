@@ -33,6 +33,11 @@ if [ "$ROLE" = "keeper" ]; then
 
         echo "Granting all privileges on database $PG_APP_DB to user $PG_APP_USER..."
         gosu postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $PG_APP_DB TO $PG_APP_USER;"
+
+        echo "Setting up privileges for user $PG_APP_USER on $PG_APP_DB..."
+        # Ensure the user can create tables in the public schema
+        gosu postgres psql -d $PG_APP_DB -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $PG_APP_USER;"
+        gosu postgres psql -d $PG_APP_DB -c "GRANT USAGE, CREATE ON SCHEMA public TO $PG_APP_USER;"
     else
         echo "No application database specified. Skipping database creation."
     fi

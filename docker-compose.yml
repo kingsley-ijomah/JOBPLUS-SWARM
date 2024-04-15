@@ -1,102 +1,102 @@
 version: '3.8'
 
 services:
-  nginx:
-    image: yasilo8240/jobplus-nginx:latest
-    ports:
-      - '80:80' # Expose Nginx on port 80
-    restart: always
-    deploy:
-      replicas: 3
-      placement:
-        constraints: [node.role == worker]
-      update_config:
-        order: start-first
-    networks:
-      - shared_swarm_network
+  # nginx:
+  #   image: yasilo8240/jobplus-nginx:latest
+  #   ports:
+  #     - '80:80' # Expose Nginx on port 80
+  #   restart: always
+  #   deploy:
+  #     replicas: 3
+  #     placement:
+  #       constraints: [node.role == worker]
+  #     update_config:
+  #       order: start-first
+  #   networks:
+  #     - shared_swarm_network
 
-  visualizer:
-    image: dockersamples/visualizer
-    # Removed ports: '8500:8080' to not expose directly
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    networks:
-      - shared_swarm_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # visualizer:
+  #   image: dockersamples/visualizer
+  #   # Removed ports: '8500:8080' to not expose directly
+  #   volumes:
+  #     - '/var/run/docker.sock:/var/run/docker.sock'
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
-  # etcd container acts as a distributed key-value store for cluster configuration and state management.
-  etcd:
-    image: yasilo8240/jobplus-etcd:latest
-    ports:
-      - '2379:2379'
-    volumes:
-      - '/mnt/shared_storage/etcd-data:/etcd-data'
-    networks:
-      - shared_swarm_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # # etcd container acts as a distributed key-value store for cluster configuration and state management.
+  # etcd:
+  #   image: yasilo8240/jobplus-etcd:latest
+  #   ports:
+  #     - '2379:2379'
+  #   volumes:
+  #     - '/mnt/shared_storage/etcd-data:/etcd-data'
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
-  # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  stolon-keeper:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=keeper
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-      - STKEEPER_DATA_DIR=/stolon-data
-      - PG_REPL_USERNAME=repluser
-      - PG_REPL_PASSWORD=replpass
-      - PG_SU_USERNAME=postgres
-      - PG_SU_PASSWORD=postgres
-      - PG_APP_USER=jobplus_user
-      - PG_APP_PASSWORD=mysecurepassword
-      - PG_APP_DB=jobplus_db
-      - PGDATA=/var/lib/postgresql/data
-    volumes:
-      - stolon_data:/stolon-data
-    networks:
-      - shared_swarm_network
+  # # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
+  # stolon-keeper:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=keeper
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #     - STKEEPER_DATA_DIR=/stolon-data
+  #     - PG_REPL_USERNAME=repluser
+  #     - PG_REPL_PASSWORD=replpass
+  #     - PG_SU_USERNAME=postgres
+  #     - PG_SU_PASSWORD=postgres
+  #     - PG_APP_USER=jobplus_user
+  #     - PG_APP_PASSWORD=mysecurepassword
+  #     - PG_APP_DB=jobplus_db
+  #     - PGDATA=/var/lib/postgresql/data
+  #   volumes:
+  #     - stolon_data:/stolon-data
+  #   networks:
+  #     - shared_swarm_network
 
-  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  stolon-sentinel:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=sentinel
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-    depends_on:
-      - etcd
-    networks:
-      - shared_swarm_network
+  # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  # stolon-sentinel:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=sentinel
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #   depends_on:
+  #     - etcd
+  #   networks:
+  #     - shared_swarm_network
 
-  # Proxies SQL client connections to the appropriate PostgreSQL server.
-  stolon-proxy:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=proxy
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-    ports:
-      - '5432:5432'
-    depends_on:
-      - etcd
-    networks:
-      - shared_swarm_network
+  # # Proxies SQL client connections to the appropriate PostgreSQL server.
+  # stolon-proxy:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=proxy
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #   ports:
+  #     - '5432:5432'
+  #   depends_on:
+  #     - etcd
+  #   networks:
+  #     - shared_swarm_network
 
-  # Managing Stolon clusters, providing operational control.
-  stolon-ctl:
-    image: yasilo8240/jobplus-stolon-ctl:latest
-    networks:
-      - shared_swarm_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # # Managing Stolon clusters, providing operational control.
+  # stolon-ctl:
+  #   image: yasilo8240/jobplus-stolon-ctl:latest
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
   backend:
     image: 'yasilo8240/jobplus-backend:latest'

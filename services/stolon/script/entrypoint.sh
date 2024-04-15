@@ -10,7 +10,15 @@ if [ "$ROLE" = "keeper" ]; then
     echo "Initializing PostgreSQL data directory..."
     gosu postgres pg_ctl init -D "$PGDATA"
     gosu postgres pg_ctl -D "$PGDATA" -o "-c listen_addresses='*'" start
-    sleep 5  # Give PostgreSQL a few seconds to start
+
+    # Wait until PostgreSQL is ready to accept connections
+    echo "Waiting for PostgreSQL to start..."
+    while ! pg_isready -q -h localhost -p 5432; do
+        sleep 1
+        echo "Waiting for PostgreSQL..."
+    done
+
+    echo "PostgreSQL is running. Creating users..."
     gosu postgres psql -c "CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';"
     gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
 fi

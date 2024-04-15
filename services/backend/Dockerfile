@@ -1,40 +1,21 @@
 # Creating multi-stage build for production
 FROM node:18-buster as build
 
-# Update and install dependencies for building native addons
-RUN apk update && apk add --no-cache \
-    build-base \
-    gcc \
-    autoconf \
-    automake \
-    zlib-dev \
-    libpng-dev \
-    vips-dev \
-    git \
-    python3 \
-    make \
-    g++
+RUN apt-get update && apt-get install -y build-essential libvips-dev
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
 
-# Prepare the working directory
 WORKDIR /opt/
 COPY package.json yarn.lock ./
-
-# Install dependencies
 RUN yarn install --production
 
-# Copy the project files
 COPY . .
-
-# Build the application
 RUN yarn build
 
 # Creating final production image
-FROM node:18
-RUN apk add --no-cache vips-dev
+FROM node:18-buster
+RUN apt-get update && apt-get install -y libvips-dev
 WORKDIR /opt/
 COPY --from=build /opt/node_modules ./node_modules
 WORKDIR /opt/app

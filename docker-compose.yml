@@ -52,6 +52,9 @@ services:
       - PG_REPL_PASSWORD=replpass
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=postgres
+      - PG_APP_USER=jobplus_user
+      - PG_APP_PASSWORD=mysecurepassword
+      - PG_APP_DB=jobplus_db
       - PGDATA=/var/lib/postgresql/data
     volumes:
       - stolon_data:/stolon-data

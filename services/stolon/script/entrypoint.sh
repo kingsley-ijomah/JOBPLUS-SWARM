@@ -19,8 +19,23 @@ if [ "$ROLE" = "keeper" ]; then
     done
 
     echo "PostgreSQL is running. Creating users..."
+    # Create the superuser
     gosu postgres psql -c "CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';"
+    # Create the replication user
     gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
+    # Create the application user
+    gosu postgres psql -c "CREATE USER $PG_APP_USER WITH ENCRYPTED PASSWORD '$PG_APP_PASSWORD';"
+
+    # Check if PG_APP_DB variable is provided and create the database
+    if [ ! -z "$PG_APP_DB" ]; then
+        echo "Creating application database $PG_APP_DB..."
+        gosu postgres psql -c "CREATE DATABASE $PG_APP_DB;"
+
+        echo "Granting all privileges on database $PG_APP_DB to user $PG_APP_USER..."
+        gosu postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $PG_APP_DB TO $PG_APP_USER;"
+    else
+        echo "No application database specified. Skipping database creation."
+    fi
 fi
 
 case "$ROLE" in

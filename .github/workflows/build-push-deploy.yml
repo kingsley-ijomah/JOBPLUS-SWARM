@@ -73,10 +73,15 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
 
-      - name: Build and Stolon CTL Image
+      - name: Build and Push Stolon CTL Image
         run: |
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest" -f services/stolon_ctl/Dockerfile services/stolon_ctl/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest"
+
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-backend:latest" -f services/backend/Dockerfile services/backend/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-backend:latest"
 
   deploy-services:
     needs: build-and-push

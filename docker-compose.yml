@@ -98,6 +98,38 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  backend:
+    image: 'yasilo8240/jobplus-backend:latest'
+    environment:
+      - NODE_ENV=production
+      - PORT=1337
+      - HOST=0.0.0.0
+      - APP_KEYS=XmOm88QSSfChi2hNVcSjww==,KXVCVy+qMwCPk/X1ABlgeQ==,5KnUwLAkcixG5UZPL51mQA==,Aep9qvWfR0hObanTxa9gTA==
+      - API_TOKEN_SALT=eIzblAOhBCQaS+LT8/QLzEjS7TBwcLbMkFifUvftcqk=
+      - ADMIN_JWT_SECRET=mthVUkamJ7mWnZPaSWCzsSmm9ZBgtv0h3ajVz7onwvY=
+      - TRANSFER_TOKEN_SALT=Lp0yXXBDnlDeN8Cw2f5dN3L3g7rFbwZcT0EB/cCMXj8=
+      - JWT_SECRET=GSmNJfgDE/60h0xj1OlaSFBf2sBPRus5fWyprCtdqRQ=
+
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=stolon-proxy
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=jobplus_db
+      - DATABASE_USERNAME=jobplus_user
+      - DATABASE_PASSWORD=mysecurepassword
+
+      - SENDGRID_API_KEY=example
+      - SENDGRID_FROM_EMAIL=exampl@codehance.com
+      - POSTMARK_API_KEY=example
+      - POSTMARK_FROM_EMAIL=example@codehance.com
+    ports:
+      - "1337:1337"
+    depends_on:
+      - stolon-proxy
+    deploy:
+      replicas: 1
+    networks:
+      - shared_swarm_network
+
 volumes:
   stolon_data:
 

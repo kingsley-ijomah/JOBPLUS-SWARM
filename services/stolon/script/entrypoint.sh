@@ -66,7 +66,8 @@ case "$ROLE" in
     exec stolon-proxy \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
-      --store-endpoints $STOLONCTL_STORE_URL
+      --store-endpoints $STOLONCTL_STORE_URL \
+      --listen-address 0.0.0.0
     ;;
   *)
     echo "Unknown role: $ROLE"

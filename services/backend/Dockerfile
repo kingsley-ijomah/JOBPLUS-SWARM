@@ -1,5 +1,5 @@
 # Creating multi-stage build for production
-FROM node:18 as build
+FROM node:18-buster as build
 
 # Update and install dependencies for building native addons
 RUN apk update && apk add --no-cache \
@@ -17,6 +17,7 @@ RUN apk update && apk add --no-cache \
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
 
 # Prepare the working directory
 WORKDIR /opt/

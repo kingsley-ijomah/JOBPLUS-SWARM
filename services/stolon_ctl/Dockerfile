@@ -7,7 +7,7 @@ ENV INSTALL_PATH=/usr/local/bin
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y wget ca-certificates curl && \
+    apt-get install -y wget ca-certificates curl netcat && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

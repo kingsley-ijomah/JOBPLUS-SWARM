@@ -7,7 +7,7 @@ services:
       - '80:80' # Expose Nginx on port 80
     restart: always
     deploy:
-      replicas: 3
+      replicas: 1
       placement:
         constraints: [node.role == worker]
       update_config:
@@ -30,8 +30,8 @@ services:
   etcd:
     image: yasilo8240/jobplus-etcd:latest
     environment:
-      - "ETCD_NAME={{.Node.Hostname}}"
-      - "ETCD_INITIAL_CLUSTER=etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380"
+      - "ETCD_NAME=etcd1"
+      - "ETCD_INITIAL_CLUSTER=etcd1=http://etcd1:2380"
     ports:
       - '2379:2379' # For client communication
       - '2380:2380' # For other etcd nodes communication
@@ -40,7 +40,6 @@ services:
     networks:
       - shared_swarm_network
     deploy:
-      replicas: 3 # neets to match the number of nodes in the ETCD_INITIAL_CLUSTER
       placement:
         constraints: [node.role == manager]
 

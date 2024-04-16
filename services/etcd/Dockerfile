@@ -27,7 +27,8 @@ ENV ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379 \
     ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01" \
     ETCD_INITIAL_CLUSTER_STATE="new" \
     ETCD_DATA_DIR="/etcd-data" \
-    ETCDCTL_API=3
+    ETCDCTL_API=3 \
+    ETCD_LOGGER="zap"
 
 # Expose the etcd client and peer ports
 EXPOSE 2379 2380

@@ -13,14 +13,12 @@ if [ "$ROLE" = "keeper" ]; then
 
     # Wait until PostgreSQL is ready to accept connections
     echo "Waiting for PostgreSQL to start..."
-    while ! pg_isready -q -h localhost -p 5432; do
+    while ! pg_isready -q -h localhost -p 5432 -U postgres; do
         sleep 1
         echo "Waiting for PostgreSQL..."
     done
 
     echo "PostgreSQL is running. Creating users..."
-    # Create the superuser
-    gosu postgres psql -c "CREATE USER $PG_SU_USERNAME WITH SUPERUSER PASSWORD '$PG_SU_PASSWORD';"
     # Create the replication user
     gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
     # Create the application user

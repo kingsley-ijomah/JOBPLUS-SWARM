@@ -54,6 +54,7 @@ services:
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
   stolon-keeper:
     image: yasilo8240/jobplus-stolon:latest
+    depends_on:
       - etcd
       - stolon-ctl
     environment:

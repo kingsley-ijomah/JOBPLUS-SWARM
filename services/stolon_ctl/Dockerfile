@@ -2,8 +2,11 @@
 FROM debian:buster
 
 # Set environment variables for version and installation directory
-ENV STOLON_VERSION=v0.16.0
-ENV INSTALL_PATH=/usr/local/bin
+ENV STOLON_VERSION=v0.16.0 \
+    INSTALL_PATH=/usr/local/bin \
+    STOLONCTL_STORE_BACKEND=etcd \
+    STOLONCTL_CLUSTER_NAME=stolon-cluster \
+    STOLONCTL_STORE_URL=http://etcd:2379
 
 # Install dependencies
 RUN apt-get update && \

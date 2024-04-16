@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y wget curl && \
+    apt-get install -y wget curl net-tools && \
     wget https://github.com/etcd-io/etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz && \
     tar -xvf etcd-v3.4.15-linux-amd64.tar.gz && \
     mv etcd-v3.4.15-linux-amd64/etcd* /usr/local/bin/ && \

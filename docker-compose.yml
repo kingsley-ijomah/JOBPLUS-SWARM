@@ -29,9 +29,6 @@ services:
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
     image: yasilo8240/jobplus-etcd:latest
-    environment:
-      - "ETCD_NAME=etcd1"
-      - "ETCD_INITIAL_CLUSTER=etcd1=http://etcd1:2380"
     ports:
       - '2379:2379' # For client communication
       - '2380:2380' # For other etcd nodes communication

@@ -25,10 +25,12 @@ ENV ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379 \
     ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380 \
     ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd:2380 \
     ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01" \
+    ETCD_INITIAL_CLUSTER="etcd=http://etcd:2380" \
     ETCD_INITIAL_CLUSTER_STATE="new" \
     ETCD_DATA_DIR="/etcd-data" \
-    ETCDCTL_API=3 \
-    ETCD_LOGGER="zap"
+    ETCD_LOGGER="zap" \
+    ETCD_NAME="etcd" \
+    ETCDCTL_API=3
 
 # Expose the etcd client and peer ports
 EXPOSE 2379 2380

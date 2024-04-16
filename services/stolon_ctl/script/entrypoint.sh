@@ -18,6 +18,7 @@ echo 'etcd is up and running!'
 if ! cluster_initialized; then
     echo "Initializing Stolon cluster..."
     # stolonctl init --cluster-name stolon-cluster --store-backend etcd --store-endpoints http://etcd:2379 --yes
+    # stolonctl init --yes
 else
     echo "Stolon cluster already initialized."
 fi

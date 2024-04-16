@@ -20,6 +20,13 @@ RUN wget https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSION}
     mv /tmp/stolon-${STOLON_VERSION}-linux-amd64/bin/stolonctl ${INSTALL_PATH}/stolonctl && \
     rm -rf /tmp/stolon*
 
+# Install etcdctl (example using a specific version)
+ENV ETCD_VER=v3.4.15
+RUN wget https://github.com/etcd-io/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz && \
+    tar xzvf etcd-${ETCD_VER}-linux-amd64.tar.gz && \
+    mv etcd-${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/ && \
+    rm -rf etcd-${ETCD_VER}-linux-amd64* etcd-${ETCD_VER}-linux-amd64.tar.gz
+
 # Set the path
 ENV PATH=$PATH:${INSTALL_PATH}
 

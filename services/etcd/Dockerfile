@@ -1,16 +1,14 @@
 FROM ubuntu:20.04
 
-# Install etcd
-RUN apt-get update && apt-get install -y wget && \
-    wget https://github.com/etcd-io/etcd/releases/download/v3.3.25/etcd-v3.3.25-linux-amd64.tar.gz && \
-    tar -xvf etcd-v3.3.25-linux-amd64.tar.gz && \
-    mv etcd-v3.3.25-linux-amd64/etcd* /usr/local/bin/ && \
-    rm -rf etcd-v3.3.25-linux-amd64* && \
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y wget curl && \
+    wget https://github.com/etcd-io/etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz && \
+    tar -xvf etcd-v3.4.15-linux-amd64.tar.gz && \
+    mv etcd-v3.4.15-linux-amd64/etcd* /usr/local/bin/ && \
+    rm -rf etcd-v3.4.15-linux-amd64* etcd-v3.4.15-linux-amd64.tar.gz && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Install curl
-RUN apt-get update && apt-get install -y curl
 
 # Create a non-root user and group for etcd to enhance security
 RUN groupadd -g 10002 etcdgroup && \
@@ -24,11 +22,15 @@ RUN mkdir /etcd-data && \
 # Set environment variables for etcd
 ENV ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379 \
     ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379 \
-    ETCD_DATA_DIR=/etcd-data \
+    ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380 \
+    ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd:2380 \
+    ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01" \
+    ETCD_INITIAL_CLUSTER_STATE="new" \
+    ETCD_DATA_DIR="/etcd-data" \
     ETCDCTL_API=3
 
-# Expose the etcd client port
-EXPOSE 2379
+# Expose the etcd client and peer ports
+EXPOSE 2379 2380
 
 # Switch to non-root user before running etcd
 USER etcduser

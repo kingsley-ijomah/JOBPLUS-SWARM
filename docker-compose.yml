@@ -29,106 +29,113 @@ services:
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
     image: yasilo8240/jobplus-etcd:latest
+    environment:
+      - ETCD_NAME: "{{.Node.Hostname}}"
+      - ETCD_INITIAL_CLUSTER: "etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380"
     ports:
-      - '2379:2379'
+      - '2379:2379' # For client communication
+      - '2380:2380' # For other etcd nodes communication
     volumes:
       - '/mnt/shared_storage/etcd-data:/etcd-data'
     networks:
       - shared_swarm_network
     deploy:
+      replicas: 3 # neets to match the number of nodes in the ETCD_INITIAL_CLUSTER
       placement:
         constraints: [node.role == manager]
 
-  # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  stolon-keeper:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=keeper
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-      - STKEEPER_DATA_DIR=/stolon-data
-      - PG_REPL_USERNAME=repluser
-      - PG_REPL_PASSWORD=replpass
-      - PG_SU_USERNAME=postgres
-      - PG_SU_PASSWORD=postgres
-      - PG_APP_USER=jobplus_user
-      - PG_APP_PASSWORD=mysecurepassword
-      - PG_APP_DB=jobplus_db
-      - PGDATA=/var/lib/postgresql/data
-    volumes:
-      - stolon_data:/stolon-data
-    networks:
-      - shared_swarm_network
+  # # Managing Stolon clusters, providing operational control.
+  # stolon-ctl:
+  #   image: yasilo8240/jobplus-stolon-ctl:latest
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
-  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  stolon-sentinel:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=sentinel
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-    depends_on:
-      - etcd
-    networks:
-      - shared_swarm_network
+  # # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
+  # stolon-keeper:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=keeper
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #     - STKEEPER_DATA_DIR=/stolon-data
+  #     - PG_REPL_USERNAME=repluser
+  #     - PG_REPL_PASSWORD=replpass
+  #     - PG_SU_USERNAME=postgres
+  #     - PG_SU_PASSWORD=postgres
+  #     - PG_APP_USER=jobplus_user
+  #     - PG_APP_PASSWORD=mysecurepassword
+  #     - PG_APP_DB=jobplus_db
+  #     - PGDATA=/var/lib/postgresql/data
+  #   volumes:
+  #     - stolon_data:/stolon-data
+  #   networks:
+  #     - shared_swarm_network
 
-  # Proxies SQL client connections to the appropriate PostgreSQL server.
-  stolon-proxy:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=proxy
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=etcd
-      - STOLONCTL_STORE_URL=http://etcd:2379
-    ports:
-      - '5432:5432'
-    depends_on:
-      - etcd
-    networks:
-      - shared_swarm_network
+  # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  # stolon-sentinel:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=sentinel
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #   depends_on:
+  #     - etcd
+  #   networks:
+  #     - shared_swarm_network
 
-  # Managing Stolon clusters, providing operational control.
-  stolon-ctl:
-    image: yasilo8240/jobplus-stolon-ctl:latest
-    networks:
-      - shared_swarm_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # # Proxies SQL client connections to the appropriate PostgreSQL server.
+  # stolon-proxy:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=proxy
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=etcd
+  #     - STOLONCTL_STORE_URL=http://etcd:2379
+  #   ports:
+  #     - '5432:5432'
+  #   depends_on:
+  #     - etcd
+  #   networks:
+  #     - shared_swarm_network
 
-  backend:
-    image: 'yasilo8240/jobplus-backend:latest'
-    environment:
-      - NODE_ENV=production
-      - PORT=1337
-      - HOST=0.0.0.0
-      - APP_KEYS=XmOm88QSSfChi2hNVcSjww==,KXVCVy+qMwCPk/X1ABlgeQ==,5KnUwLAkcixG5UZPL51mQA==,Aep9qvWfR0hObanTxa9gTA==
-      - API_TOKEN_SALT=eIzblAOhBCQaS+LT8/QLzEjS7TBwcLbMkFifUvftcqk=
-      - ADMIN_JWT_SECRET=mthVUkamJ7mWnZPaSWCzsSmm9ZBgtv0h3ajVz7onwvY=
-      - TRANSFER_TOKEN_SALT=Lp0yXXBDnlDeN8Cw2f5dN3L3g7rFbwZcT0EB/cCMXj8=
-      - JWT_SECRET=GSmNJfgDE/60h0xj1OlaSFBf2sBPRus5fWyprCtdqRQ=
 
-      - DATABASE_CLIENT=postgres
-      - DATABASE_HOST=stolon-proxy
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=jobplus_db
-      - DATABASE_USERNAME=jobplus_user
-      - DATABASE_PASSWORD=mysecurepassword
 
-      - SENDGRID_API_KEY=example
-      - SENDGRID_FROM_EMAIL=exampl@codehance.com
-      - POSTMARK_API_KEY=example
-      - POSTMARK_FROM_EMAIL=example@codehance.com
-    ports:
-      - "1337:1337"
-    depends_on:
-      - stolon-proxy
-    deploy:
-      replicas: 1
-    networks:
-      - shared_swarm_network
+  # backend:
+  #   image: 'yasilo8240/jobplus-backend:latest'
+  #   environment:
+  #     - NODE_ENV=production
+  #     - PORT=1337
+  #     - HOST=0.0.0.0
+  #     - APP_KEYS=XmOm88QSSfChi2hNVcSjww==,KXVCVy+qMwCPk/X1ABlgeQ==,5KnUwLAkcixG5UZPL51mQA==,Aep9qvWfR0hObanTxa9gTA==
+  #     - API_TOKEN_SALT=eIzblAOhBCQaS+LT8/QLzEjS7TBwcLbMkFifUvftcqk=
+  #     - ADMIN_JWT_SECRET=mthVUkamJ7mWnZPaSWCzsSmm9ZBgtv0h3ajVz7onwvY=
+  #     - TRANSFER_TOKEN_SALT=Lp0yXXBDnlDeN8Cw2f5dN3L3g7rFbwZcT0EB/cCMXj8=
+  #     - JWT_SECRET=GSmNJfgDE/60h0xj1OlaSFBf2sBPRus5fWyprCtdqRQ=
+
+  #     - DATABASE_CLIENT=postgres
+  #     - DATABASE_HOST=stolon-proxy
+  #     - DATABASE_PORT=5432
+  #     - DATABASE_NAME=jobplus_db
+  #     - DATABASE_USERNAME=jobplus_user
+  #     - DATABASE_PASSWORD=mysecurepassword
+
+  #     - SENDGRID_API_KEY=example
+  #     - SENDGRID_FROM_EMAIL=exampl@codehance.com
+  #     - POSTMARK_API_KEY=example
+  #     - POSTMARK_FROM_EMAIL=example@codehance.com
+  #   ports:
+  #     - "1337:1337"
+  #   depends_on:
+  #     - stolon-proxy
+  #   deploy:
+  #     replicas: 1
+  #   networks:
+  #     - shared_swarm_network
 
 volumes:
   stolon_data:

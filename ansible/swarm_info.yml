@@ -1,3 +1,3 @@
-swarm_manager_public_ip: "167.172.50.140"
-swarm_worker_join_token: "SWMTKN-1-69zsj6szzyxt930m022p6vznldrr2rwe9wjmecadsftmq3ntze-37qwtz81yg4d0eo1bn9v6udlk"
-swarm_manager_join_token: "SWMTKN-1-69zsj6szzyxt930m022p6vznldrr2rwe9wjmecadsftmq3ntze-8s4s3n56zlmrualttgbe5sszr"
+swarm_manager_public_ip: "134.122.110.116"
+swarm_worker_join_token: "SWMTKN-1-3j4qgxeysyqgjp91y1sb804ybtu0lpk6ekug6denbc56ey9387-ckx34lchw1tkl73y2euz6wm4h"
+swarm_manager_join_token: "SWMTKN-1-3j4qgxeysyqgjp91y1sb804ybtu0lpk6ekug6denbc56ey9387-2vswq4b1bj2n078bmahntdtb2"

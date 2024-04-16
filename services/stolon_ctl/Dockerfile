@@ -4,7 +4,7 @@ FROM debian:buster
 # Set environment variables for version and installation directory
 ENV STOLON_VERSION=v0.16.0 \
     INSTALL_PATH=/usr/local/bin \
-    STOLONCTL_STORE_BACKEND=etcd \
+    STOLONCTL_STORE_BACKEND=etcdv3 \
     STOLONCTL_CLUSTER_NAME=stolon-cluster \
     STOLONCTL_STORE_URL=http://etcd:2379
 

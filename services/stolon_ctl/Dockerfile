@@ -6,7 +6,8 @@ ENV STOLON_VERSION=v0.16.0 \
     INSTALL_PATH=/usr/local/bin \
     STOLONCTL_STORE_BACKEND=etcdv3 \
     STOLONCTL_CLUSTER_NAME=stolon-cluster \
-    STOLONCTL_STORE_URL=http://etcd:2379
+    STOLONCTL_STORE_URL=http://etcd:2379 \
+    ETCDCTL_API=3
 
 # Install dependencies
 RUN apt-get update && \

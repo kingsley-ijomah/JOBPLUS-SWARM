@@ -3,8 +3,7 @@ set -e
 
 # Function to check if the cluster is already initialized
 cluster_initialized() {
-    stolonctl status &> /dev/null
-    # stolonctl status --cluster-name stolon-cluster --store-backend etcd --store-endpoints http://etcd:2379 &> /dev/null
+    stolonctl status --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 &> /dev/null
     return $?
 }
 
@@ -18,8 +17,7 @@ echo 'etcd is up and running!'
 # Initialize the cluster if it's not already initialized
 if ! cluster_initialized; then
     echo "Initializing Stolon cluster..."
-    # stolonctl init --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --yes
-    stolonctl init --yes
+    stolonctl init --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --yes
 else
     echo "Stolon cluster already initialized."
 fi

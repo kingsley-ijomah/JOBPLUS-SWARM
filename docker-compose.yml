@@ -33,7 +33,8 @@ services:
       - '2379:2379' # For client communication
       - '2380:2380' # For other etcd nodes communication
     volumes:
-      - '/mnt/shared_storage/etcd-data:/etcd-data'
+      # - '/mnt/shared_storage/etcd-data:/etcd-data'
+      - etcd-data:/etcd-data
     networks:
       - shared_swarm_network
     deploy:
@@ -140,6 +141,7 @@ services:
 
 volumes:
   stolon_data:
+  etcd-data:
 
 networks:
   shared_swarm_network:

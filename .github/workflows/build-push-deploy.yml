@@ -68,10 +68,10 @@ jobs:
           docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
           docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
 
-      # - name: Build and Push Stolon CTL Image
-      #   run: |
-      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest" -f services/stolon_ctl/Dockerfile services/stolon_ctl/
-      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest"
+      - name: Build and Push Stolon CTL Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest" -f services/stolon_ctl/Dockerfile services/stolon_ctl/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest"
 
       # - name: Build and Push Stolon Image
       #   run: |

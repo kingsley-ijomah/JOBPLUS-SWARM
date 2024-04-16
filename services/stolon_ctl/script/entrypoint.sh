@@ -7,6 +7,13 @@ cluster_initialized() {
     return $?
 }
 
+# Wait for etcd to become available
+while ! nc -z etcd 2379; do
+    echo 'Waiting for etcd to become available...'
+    sleep 1
+done
+echo 'etcd is up and running!'
+
 # Initialize the cluster if it's not already initialized
 if ! cluster_initialized; then
     echo "Initializing Stolon cluster..."

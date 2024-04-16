@@ -19,7 +19,7 @@
     state: directory
     owner: etcduser
     group: etcdgroup
-    mode: '0750' # Appropriate permissions for etcd data directory
+    mode: '0700' # Appropriate permissions for etcd data directory
 
 - name: Add etcd user to docker group
   ansible.builtin.user:

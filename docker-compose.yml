@@ -22,6 +22,8 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - shared_swarm_network
+    depends_on:
+      - nginx
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -35,6 +37,8 @@ services:
     volumes:
       # - '/mnt/shared_storage/etcd-data:/etcd-data'
       - etcd-data:/etcd-data
+    depends_on:
+      - nginx
     networks:
       - shared_swarm_network
     deploy:

@@ -37,8 +37,6 @@ services:
     volumes:
       # - '/mnt/shared_storage/etcd-data:/etcd-data'
       - etcd-data:/etcd-data
-    depends_on:
-      - nginx
     networks:
       - shared_swarm_network
     deploy:
@@ -56,30 +54,30 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  # stolon-keeper:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   depends_on:
-  #     - etcd
-  #     - stolon-ctl
-  #   environment:
-  #     - ROLE=keeper
-  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
-  #     - STOLONCTL_STORE_BACKEND=etcdv3
-  #     - STOLONCTL_STORE_URL=http://etcd:2379
-  #     - STKEEPER_DATA_DIR=/stolon-data
-  #     - PG_REPL_USERNAME=repluser
-  #     - PG_REPL_PASSWORD=replpass
-  #     - PG_SU_USERNAME=postgres
-  #     - PG_SU_PASSWORD=postgres
-  #     - PG_APP_USER=jobplus_user
-  #     - PG_APP_PASSWORD=mysecurepassword
-  #     - PG_APP_DB=jobplus_db
-  #     - PGDATA=/var/lib/postgresql/data
-  #   volumes:
-  #     - stolon_data:/stolon-data
-  #   networks:
-  #     - shared_swarm_network
+  # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
+  stolon-keeper:
+    image: yasilo8240/jobplus-stolon:latest
+    depends_on:
+      - etcd
+      - stolon-ctl
+    environment:
+      - ROLE=keeper
+      - STOLONCTL_CLUSTER_NAME=stolon-cluster
+      - STOLONCTL_STORE_BACKEND=etcdv3
+      - STOLONCTL_STORE_URL=http://etcd:2379
+      - STKEEPER_DATA_DIR=/stolon-data
+      - PG_REPL_USERNAME=repluser
+      - PG_REPL_PASSWORD=replpass
+      - PG_SU_USERNAME=postgres
+      - PG_SU_PASSWORD=postgres
+      - PG_APP_USER=jobplus_user
+      - PG_APP_PASSWORD=mysecurepassword
+      - PG_APP_DB=jobplus_db
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - stolon_data:/stolon-data
+    networks:
+      - shared_swarm_network
 
   # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
   # stolon-sentinel:

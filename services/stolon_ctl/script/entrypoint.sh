@@ -17,7 +17,11 @@ echo 'etcd is up and running!'
 # Initialize the cluster if it's not already initialized
 if ! cluster_initialized; then
     echo "Initializing Stolon cluster..."
-    # stolonctl init --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --yes
+    # This command initializes the Stolon cluster configuration in the etcd database. It sets up the necessary 
+    # data structures in etcd under the specified cluster name "stolon-cluster", using etcd as the backend storage.
+    # This includes writing initial configuration and state data into etcd, which Stolon components will use for
+    # managing the PostgreSQL cluster.
+    stolonctl init --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --yes
 else
     echo "Stolon cluster already initialized."
 fi

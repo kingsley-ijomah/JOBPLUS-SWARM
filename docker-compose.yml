@@ -54,12 +54,25 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  stolon-sentinel:
+    image: yasilo8240/jobplus-stolon:latest
+    environment:
+      - ROLE=sentinel
+      - STOLONCTL_CLUSTER_NAME=stolon-cluster
+      - STOLONCTL_STORE_BACKEND=etcdv3
+      - STOLONCTL_STORE_URL=http://etcd:2379
+    depends_on:
+      - etcd
+    networks:
+      - shared_swarm_network
+
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
   stolon-keeper:
     image: yasilo8240/jobplus-stolon:latest
     depends_on:
       - etcd
-      - stolon-ctl
+      - stolon-sentinel
     environment:
       - ROLE=keeper
       - STOLONCTL_CLUSTER_NAME=stolon-cluster
@@ -78,19 +91,6 @@ services:
       - stolon_data:/stolon-data
     networks:
       - shared_swarm_network
-
-  # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  # stolon-sentinel:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   environment:
-  #     - ROLE=sentinel
-  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
-  #     - STOLONCTL_STORE_BACKEND=etcd
-  #     - STOLONCTL_STORE_URL=http://etcd:2379
-  #   depends_on:
-  #     - etcd
-  #   networks:
-  #     - shared_swarm_network
 
   # # Proxies SQL client connections to the appropriate PostgreSQL server.
   # stolon-proxy:

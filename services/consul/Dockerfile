@@ -1,5 +1,5 @@
 # Start from a specific version of the official Consul image
-FROM consul:1.18.1
+FROM consul:1.18
 
 # Set environment variables for network interfaces
 ENV CONSUL_BIND_INTERFACE=eth0

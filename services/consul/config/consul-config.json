@@ -4,7 +4,7 @@
   "server": true,
   "bootstrap_expect": 3,
   "retry_join": ["tasks.consul"],
-  "encrypt": "your-encryption-key-here",
+  "encrypt": "6C0kNxwMwV3WQNg4dB4yPYz96368klinVwFgjLNI+GA=",
   "performance": {
     "raft_multiplier": 1
   }

@@ -5,10 +5,6 @@
   "bootstrap_expect": 3,
   "retry_join": ["tasks.consul"],
   "encrypt": "your-encryption-key-here",
-  "logs": {
-    "enable_syslog": true,
-    "log_level": "INFO"
-  },
   "performance": {
     "raft_multiplier": 1
   }

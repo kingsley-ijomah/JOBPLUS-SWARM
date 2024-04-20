@@ -1,6 +1,9 @@
 # Start from a specific version of the official Consul image from HashiCorp's namespace
 FROM hashicorp/consul:1.18.1
 
+# Install jq
+RUN apk add --no-cache jq
+
 # Set environment variables for network interfaces
 ENV CONSUL_BIND_INTERFACE=eth0
 ENV CONSUL_CLIENT_INTERFACE=eth0

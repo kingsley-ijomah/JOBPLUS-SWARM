@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Detect the private IP address
 IP_ADDRESS=$(hostname -I | awk '{print $1}')  

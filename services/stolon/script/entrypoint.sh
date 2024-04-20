@@ -27,8 +27,14 @@ if [ "$ROLE" = "keeper" ]; then
         sleep 1
         echo "Waiting for PostgreSQL..."
     done
+    echo "PostgreSQL is operational. Verifying registration with Consul..."
 
-    echo "PostgreSQL is running."
+    # Verify registration with Consul
+    while ! curl -s http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/$IP_ADDRESS | grep -q '"Value"'; do
+        echo "Keeper not registered in Consul, waiting..."
+        sleep 1
+    done
+    echo "Keeper registered in Consul."
 
     # echo "PostgreSQL is running. Creating users..."
     # # Create the replication user

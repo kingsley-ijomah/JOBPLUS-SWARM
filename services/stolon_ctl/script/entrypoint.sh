@@ -3,7 +3,7 @@ set -e
 
 # Function to check if the cluster is already initialized
 cluster_initialized() {
-    stolonctl status --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 &> /dev/null
+    stolonctl status --cluster-name=stolon-cluster --store-backend=consul --store-endpoints=http://consul:8500 &> /dev/null
     return $?
 }
 
@@ -21,7 +21,7 @@ if ! cluster_initialized; then
     # data structures in etcd under the specified cluster name "stolon-cluster", using etcd as the backend storage.
     # This includes writing initial configuration and state data into etcd, which Stolon components will use for
     # managing the PostgreSQL cluster.
-    stolonctl init --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --yes
+    stolonctl init --cluster-name=stolon-cluster --store-backend=consul --store-endpoints=http://consul:8500 --yes
 else
     echo "Stolon cluster already initialized."
 fi

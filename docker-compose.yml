@@ -75,6 +75,9 @@ services:
       - stolon-keeper
     networks:
       - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
   stolon-keeper:
@@ -99,6 +102,9 @@ services:
       - stolon_data:/stolon-data
     networks:
       - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # # Proxies SQL client connections to the appropriate PostgreSQL server.
   # stolon-proxy:

@@ -52,21 +52,6 @@ services:
       CONSUL_CLIENT_INTERFACE: 'eth0'
     command: "agent -server -ui -bootstrap -client=0.0.0.0 -bind={{ GetInterfaceIP 'eth0' }} -data-dir=/consul/data"
 
-  # # etcd container acts as a distributed key-value store for cluster configuration and state management.
-  # etcd:
-  #   image: yasilo8240/jobplus-etcd:latest
-  #   ports:
-  #     - '2379:2379' # For client communication
-  #     - '2380:2380' # For other etcd nodes communication
-  #   volumes:
-  #     # - '/mnt/shared_storage/etcd-data:/etcd-data'
-  #     - etcd-data:/etcd-data
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
-
   # Managing Stolon clusters, providing operational control.
   stolon-ctl:
     image: yasilo8240/jobplus-stolon-ctl:latest
@@ -170,3 +155,20 @@ volumes:
 networks:
   shared_swarm_network:
     external: true
+
+
+
+  # # etcd container acts as a distributed key-value store for cluster configuration and state management.
+  # etcd:
+  #   image: yasilo8240/jobplus-etcd:latest
+  #   ports:
+  #     - '2379:2379' # For client communication
+  #     - '2380:2380' # For other etcd nodes communication
+  #   volumes:
+  #     # - '/mnt/shared_storage/etcd-data:/etcd-data'
+  #     - etcd-data:/etcd-data
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]

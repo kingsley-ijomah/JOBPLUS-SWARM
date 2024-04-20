@@ -2,6 +2,16 @@
 
 echo "Starting Stolon as a $ROLE..."
 
+# Wait for Consul to become ready
+CONSUL_HOST="consul"
+CONSUL_PORT=8500
+echo "Waiting for Consul to be ready at $CONSUL_HOST:$CONSUL_PORT..."
+while ! curl -s http://$CONSUL_HOST:$CONSUL_PORT/v1/status/leader | grep -q '"'; do
+    echo "Waiting for Consul to start..."
+    sleep 1
+done
+echo "Consul is ready."
+
 # Fetch the IP address of the container
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 

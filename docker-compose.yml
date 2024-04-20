@@ -47,8 +47,10 @@ services:
         constraints: [node.role == manager] # change to worker later if needed
       restart_policy:
         condition: on-failure
-    # command: ["consul", "agent", "-server", "-bootstrap-expect=1", "-config-dir=/consul/config"]
-    command: "agent -server -ui -bootstrap-expect=1 -retry-join=tasks.consul -client=0.0.0.0"
+    environment:
+      CONSUL_BIND_INTERFACE: 'eth0'
+      CONSUL_CLIENT_INTERFACE: 'eth0'
+    command: "agent -server -ui -bootstrap -client=0.0.0.0 -bind={{ GetInterfaceIP 'eth0' }} -data-dir=/consul/data"
 
   # # etcd container acts as a distributed key-value store for cluster configuration and state management.
   # etcd:

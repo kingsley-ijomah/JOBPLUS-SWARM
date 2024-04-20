@@ -1,10 +1,13 @@
 {
-  "data_dir": "/consul-data",
-  "ui": true,
+  "data_dir": "/consul/data",
+  "ui_config": {
+    "enabled": true
+  },
   "server": true,
-  "bootstrap_expect": 1,
-  "retry_join": ["tasks.consul"],
-  "encrypt": "e/9VPvmQckeKgKMyC9GUOA==", 
+  "bootstrap": true,
+  "client_addr": "0.0.0.0",
+  "bind_addr": "{{ GetInterfaceIP 'eth0' }}",
+  "encrypt": "e/9VPvmQckeKgKMyC9GUOA==",
   "performance": {
     "raft_multiplier": 1
   }

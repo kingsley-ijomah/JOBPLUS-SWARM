@@ -25,8 +25,8 @@ RUN ls /usr/local/bin/stolon-*
 
 # Set up the environment variables
 ENV STOLONCTL_CLUSTER_NAME stolon-cluster
-ENV STOLONCTL_STORE_BACKEND etcdv3
-ENV STOLONCTL_STORE_URL etcd://etcd:2379
+ENV STOLONCTL_STORE_BACKEND consul
+ENV STOLONCTL_STORE_URL http://consul:8500
 
 # Expose PostgreSQL and Stolon proxy ports
 EXPOSE 5432 5433

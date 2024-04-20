@@ -6,7 +6,7 @@
   "server": true,
   "bootstrap": true,
   "client_addr": "0.0.0.0",
-  "bind_addr": "{{ GetInterfaceIP 'eth0' }}",
+  "bind_addr": "0.0.0.0",
   "encrypt": "e/9VPvmQckeKgKMyC9GUOA==",
   "performance": {
     "raft_multiplier": 1

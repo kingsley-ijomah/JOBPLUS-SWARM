@@ -35,6 +35,11 @@ services:
       - console_data:/consul/data
     ports:
       - '8500:8500'  # Expose the Consul UI and API port
+      - "8400:8400"
+      - "8301-8302:8301-8302"
+      - "8301-8302:8301-8302/udp"
+      - "8600:8600"
+      - "8600:8600/udp"
     networks:
       - shared_swarm_network
     deploy:
@@ -43,7 +48,7 @@ services:
       restart_policy:
         condition: on-failure
     # command: ["consul", "agent", "-server", "-bootstrap-expect=1", "-config-dir=/consul/config"]
-    command: "agent -server -ui -bootstrap-expect=3 -retry-join=tasks.consul -client=0.0.0.0"
+    command: "agent -server -ui -bootstrap-expect=1 -retry-join=tasks.consul -client=0.0.0.0"
 
   # # etcd container acts as a distributed key-value store for cluster configuration and state management.
   # etcd:

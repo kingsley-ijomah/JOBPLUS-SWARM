@@ -28,11 +28,13 @@ if [ "$ROLE" = "keeper" ]; then
         echo "Waiting for PostgreSQL..."
     done
 
-    echo "PostgreSQL is running. Creating users..."
-    # Create the replication user
-    gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
-    # Create the application user
-    gosu postgres psql -c "CREATE USER $PG_APP_USER WITH ENCRYPTED PASSWORD '$PG_APP_PASSWORD';"
+    echo "PostgreSQL is running."
+
+    # echo "PostgreSQL is running. Creating users..."
+    # # Create the replication user
+    # gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
+    # # Create the application user
+    # gosu postgres psql -c "CREATE USER $PG_APP_USER WITH ENCRYPTED PASSWORD '$PG_APP_PASSWORD';"
 
     # # Check if PG_APP_DB variable is provided and create the database
     # if [ ! -z "$PG_APP_DB" ]; then

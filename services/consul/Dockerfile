@@ -1,5 +1,5 @@
-# Start from a specific version of the official Consul image
-FROM consul:1.18
+# Start from a specific version of the official Consul image from HashiCorp's namespace
+FROM hashicorp/consul:1.18.1
 
 # Set environment variables for network interfaces
 ENV CONSUL_BIND_INTERFACE=eth0

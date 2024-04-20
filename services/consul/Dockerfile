@@ -16,6 +16,6 @@ COPY script/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Expose ports for Consul
-EXPOSE 8500
+EXPOSE 8300 8301 8301/udp 8302 8302/udp 8500 8600 8600/udp
 
 ENTRYPOINT ["/entrypoint.sh"]

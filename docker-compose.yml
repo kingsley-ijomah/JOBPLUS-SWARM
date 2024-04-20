@@ -63,21 +63,21 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  stolon-sentinel:
-    image: yasilo8240/jobplus-stolon:latest
-    environment:
-      - ROLE=sentinel
-      - STOLONCTL_CLUSTER_NAME=stolon-cluster
-      - STOLONCTL_STORE_BACKEND=consul
-      - STOLONCTL_STORE_URL=http://consul:8500
-    depends_on:
-      - stolon-keeper
-    networks:
-      - shared_swarm_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+  # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  # stolon-sentinel:
+  #   image: yasilo8240/jobplus-stolon:latest
+  #   environment:
+  #     - ROLE=sentinel
+  #     - STOLONCTL_CLUSTER_NAME=stolon-cluster
+  #     - STOLONCTL_STORE_BACKEND=consul
+  #     - STOLONCTL_STORE_URL=http://consul:8500
+  #   depends_on:
+  #     - stolon-keeper
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
   stolon-keeper:

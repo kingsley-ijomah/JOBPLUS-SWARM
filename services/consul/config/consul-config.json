@@ -2,7 +2,7 @@
   "data_dir": "/consul-data",
   "ui": true,
   "server": true,
-  "bootstrap_expect": 3,
+  "bootstrap_expect": 1,
   "retry_join": ["tasks.consul"],
   "encrypt": "e/9VPvmQckeKgKMyC9GUOA==", 
   "performance": {

@@ -17,9 +17,9 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 # Initialize the database system and create users
 if [ "$ROLE" = "keeper" ]; then
-    echo "Initializing PostgreSQL data directory..."
-    gosu postgres pg_ctl init -D "$PGDATA"
-    gosu postgres pg_ctl -D "$PGDATA" -o "-c listen_addresses='*'" start
+    # echo "Initializing PostgreSQL data directory..."
+    # gosu postgres pg_ctl init -D "$PGDATA"
+    # gosu postgres pg_ctl -D "$PGDATA" -o "-c listen_addresses='*'" start
 
     # Wait until PostgreSQL is ready to accept connections
     echo "Waiting for PostgreSQL to start..."

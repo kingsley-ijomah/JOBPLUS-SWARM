@@ -25,7 +25,7 @@ services:
       PG_BIN_PATH: /usr/lib/postgresql/16/bin
       PG_PORT: 5435
     command: >
-      bash -c "echo 'yes' | stolonctl --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper --data-dir ${STOLON_DATA_DIR} --cluster-name ${STKEEPER_CLUSTER_NAME} --store-backend ${STKEEPER_STORE_BACKEND} --pg-listen-address ${PG_LISTEN_ADDRESS} --pg-repl-username ${PG_REPL_USERNAME} --pg-repl-password ${PG_REPL_PASSWORD} --pg-su-username ${PG_SU_USERNAME} --pg-su-password ${PG_SU_PASSWORD} --uid ${STKEEPER_UID} --pg-bin-path ${PG_BIN_PATH} --pg-port ${PG_PORT}"
+      bash -c "stolonctl --yes --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper --data-dir /stolon/data --cluster-name stolon-cluster --store-backend consul --store-endpoints http://consul:8500 --pg-listen-address '0.0.0.0' --pg-repl-username repluser --pg-repl-password replpass --pg-su-username postgres --pg-su-password postgres --uid keeper0 --pg-bin-path /usr/lib/postgresql/16/bin --pg-port 5435"
     ports:
       - "5432:5432"
     volumes:

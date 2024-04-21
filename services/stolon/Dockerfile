@@ -38,4 +38,9 @@ COPY script/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint script as the entrypoint for the container
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
+
+# Command to keep the container running
+# temp delete
+CMD ["tail", "-f", "/dev/null"] 
+```

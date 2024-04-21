@@ -68,6 +68,7 @@ services:
     image: yasilo8240/jobplus-stolon:latest
     depends_on:
       - stolon-ctl
+      - consul
     environment:
       - ROLE=keeper
       - STOLONCTL_CLUSTER_NAME=stolon-cluster
@@ -105,6 +106,7 @@ services:
         constraints: [node.role == manager]
     depends_on:
       - stolon-keeper
+      - consul
 
   # # Proxies SQL client connections to the appropriate PostgreSQL server.
   # stolon-proxy:

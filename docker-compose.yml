@@ -17,7 +17,8 @@ services:
       STKEEPER_STORE_BACKEND: consul
       STKEEPER_STORE_ENDPOINTS: consul:8500
       STOLON_DATA_DIR: /stolon-data
-    command: bash -c "stolonctl --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper"
+    command: >
+      bash -c "echo 'yes' | stolonctl --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper"
     ports:
       - "5432:5432"
     volumes:

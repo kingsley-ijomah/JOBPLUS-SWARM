@@ -54,12 +54,21 @@ fi
 
 if [ "$ROLE" = "sentinel" ]; then
     # Verify registration with Consul
-    while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+    while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/?recurse" | grep -q "keeper/info/$KEEPER_ID"; do
         echo "Keeper not registered in Consul, waiting..."
         sleep 1
     done
     echo "Keeper is registered in Consul."
 fi
+
+# if [ "$ROLE" = "sentinel" ]; then
+#     # Verify registration with Consul
+#     while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+#         echo "Keeper not registered in Consul, waiting..."
+#         sleep 1
+#     done
+#     echo "Keeper is registered in Consul."
+# fi
 
 
 case "$ROLE" in

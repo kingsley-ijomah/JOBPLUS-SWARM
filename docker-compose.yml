@@ -16,14 +16,21 @@ services:
       STKEEPER_CLUSTER_NAME: stolon-cluster
       STKEEPER_STORE_BACKEND: consul
       STKEEPER_STORE_ENDPOINTS: consul:8500
-      STKEEPER_DATA_DIR: /stolon/data
+      STOLON_DATA_DIR: /stolon/data
       PG_LISTEN_ADDRESS: '0.0.0.0'
+      PG_REPL_USERNAME: repluser
+      PG_REPL_PASSWORD: replpass
+      PG_SU_USERNAME: postgres
+      PG_SU_PASSWORD: postgres
+      PG_BIN_PATH: /usr/lib/postgresql/16/bin
+      PG_PORT: 5435
     command: >
-      bash -c "stolonctl --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster --yes && exec stolon-keeper --pg-listen-address=${PG_LISTEN_ADDRESS}"
+      bash -c "echo 'yes' | stolonctl --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper --data-dir ${STOLON_DATA_DIR} --cluster-name ${STKEEPER_CLUSTER_NAME} --store-backend ${STKEEPER_STORE_BACKEND} --store-endpoints ${STKEEPER_STORE_ENDPOINTS} --pg-listen-address ${PG_LISTEN_ADDRESS} --pg-repl-username ${PG_REPL_USERNAME} --pg-repl-password ${PG_REPL_PASSWORD} --pg-su-username ${PG_SU_USERNAME} --pg-su-password ${PG_SU_PASSWORD} --uid ${STKEEPER_UID} --pg-bin-path ${PG_BIN_PATH} --pg-port ${PG_PORT}"
     ports:
       - "5432:5432"
     volumes:
-      - stolon_data:/stolon-data
+      - stolon_data:/stolon/data
+
 
   stolon-sentinel:
     image: sorintlab/stolon:master-pg12

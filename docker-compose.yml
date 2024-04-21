@@ -15,7 +15,7 @@ services:
       STKEEPER_UID: keeper0
       STKEEPER_CLUSTER_NAME: stolon-cluster
       STKEEPER_STORE_BACKEND: consul
-      STKEEPER_STORE_ENDPOINTS: consul:8500
+      STKEEPER_STORE_ENDPOINTS: http://consul:8500
       STOLON_DATA_DIR: /stolon/data
       PG_LISTEN_ADDRESS: '0.0.0.0'
       PG_REPL_USERNAME: repluser

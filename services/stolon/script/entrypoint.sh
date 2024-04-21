@@ -29,13 +29,13 @@ if [ "$ROLE" = "keeper" ]; then
     done
     echo "PostgreSQL is operational."
 
-    # # Ensure keeper is registered in Consul
-    # echo "Verifying keeper registration with Consul..."
-    # while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
-    #     echo "Keeper not registered in Consul, waiting..."
-    #     sleep 1
-    # done
-    # echo "Keeper is registered in Consul."
+    # Ensure keeper is registered in Consul
+    echo "Verifying keeper registration with Consul..."
+    while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+        echo "Keeper not registered in Consul, waiting..."
+        sleep 1
+    done
+    echo "Keeper $KEEPER_ID is registered in Consul."
 
     # echo "PostgreSQL is running. Creating users..."
     # # Create the replication user

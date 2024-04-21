@@ -16,8 +16,9 @@ services:
       - consul
     volumes:
       - stolon-data:/stolon/data
+    # user: postgres
     command: >
-      bash -c "stolonctl --yes --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper --data-dir /stolon/data --cluster-name stolon-cluster --store-backend consul --store-endpoints http://consul:8500 --pg-listen-address '0.0.0.0' --pg-repl-username repluser --pg-repl-password replpass --pg-su-username postgres --pg-su-password postgres --uid keeper0 --pg-bin-path /usr/lib/postgresql/12/bin --pg-port 5435"
+      bash -c "stolonctl --yes --store-backend=consul --store-endpoints=http://consul:8500 init --cluster-name stolon-cluster && exec stolon-keeper --data-dir /stolon/data --cluster-name stolon-cluster --store-backend consul --store-endpoints http://consul:8500 --pg-listen-address '0.0.0.0' --pg-repl-username repluser --pg-repl-password replpass --pg-su-username postgres --pg-su-password postgres --uid keeper0 --pg-bin-path /usr/lib/postgresql/12/bin --pg-port 5435 --pg-data-dir /var/lib/postgresql/data"
     ports:
       - "5432:5432"
     deploy:

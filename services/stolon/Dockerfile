@@ -43,4 +43,3 @@ RUN chmod +x /entrypoint.sh
 # Command to keep the container running
 # temp delete
 CMD ["tail", "-f", "/dev/null"] 
-```

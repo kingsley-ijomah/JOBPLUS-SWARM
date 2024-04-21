@@ -29,13 +29,6 @@ if [ "$ROLE" = "keeper" ]; then
     done
     echo "PostgreSQL is operational. Verifying registration with Consul..."
 
-    # # Verify registration with Consul
-    # while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
-    #     echo "Keeper not registered in Consul, waiting..."
-    #     sleep 1
-    # done
-    # echo "Keeper is registered in Consul."
-
     # echo "PostgreSQL is running. Creating users..."
     # # Create the replication user
     # gosu postgres psql -c "CREATE USER $PG_REPL_USERNAME REPLICATION LOGIN ENCRYPTED PASSWORD '$PG_REPL_PASSWORD';"
@@ -58,6 +51,16 @@ if [ "$ROLE" = "keeper" ]; then
     #     echo "No application database specified. Skipping database creation."
     # fi
 fi
+
+if [ "$ROLE" = "sentinel" ]; then
+    # Verify registration with Consul
+    while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+        echo "Keeper not registered in Consul, waiting..."
+        sleep 1
+    done
+    echo "Keeper is registered in Consul."
+fi
+
 
 case "$ROLE" in
   "keeper")

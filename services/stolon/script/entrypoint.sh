@@ -21,13 +21,13 @@ if [ "$ROLE" = "keeper" ]; then
     # gosu postgres pg_ctl init -D "$PGDATA"
     # gosu postgres pg_ctl -D "$PGDATA" -o "-c listen_addresses='*'" start
 
-    # Wait until PostgreSQL is ready to accept connections
-    echo "Waiting for PostgreSQL to start..."
-    while ! pg_isready -q -h localhost -p 5432 -U postgres; do
-        sleep 1
-        echo "Waiting for PostgreSQL..."
-    done
-    echo "PostgreSQL is operational."
+    # # Wait until PostgreSQL is ready to accept connections
+    # echo "Waiting for PostgreSQL to start..."
+    # while ! pg_isready -q -h localhost -p 5432 -U postgres; do
+    #     sleep 1
+    #     echo "Waiting for PostgreSQL..."
+    # done
+    # echo "PostgreSQL is operational."
 
     # echo "PostgreSQL is running. Creating users..."
     # # Create the replication user

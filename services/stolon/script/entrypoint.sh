@@ -29,25 +29,6 @@ if [ "$ROLE" = "keeper" ]; then
     done
     echo "PostgreSQL is operational."
 
-    # Wait for keeper to register in Consul
-    echo "Checking for keeper's registration in Consul..."
-    MAX_WAIT=180  # Maximum wait time in seconds
-    INTERVAL=10   # Check every 10 seconds
-    while [ $MAX_WAIT -gt 0 ]; do
-        if curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; then
-            echo "Keeper $KEEPER_ID is registered in Consul."
-            break
-        else
-            echo "Keeper $KEEPER_ID not yet registered, waiting..."
-            sleep $INTERVAL
-            let MAX_WAIT-=INTERVAL
-        fi
-    done
-
-    if [ $MAX_WAIT -le 0 ]; then
-        echo "Timeout waiting for keeper to register in Consul."
-    fi
-
     # # Ensure keeper is registered in Consul
     # echo "Verifying keeper registration with Consul..."
     # while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do

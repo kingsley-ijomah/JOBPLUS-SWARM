@@ -36,12 +36,11 @@ echo "Starting Stolon as a $ROLE..."
 case "$ROLE" in
   "ctl")
     echo "Checking if Stolon cluster is already initialized..."
-    # Try to retrieve the cluster status
     if stolonctl status --cluster-name $STOLONCTL_CLUSTER_NAME --store-backend $STOLONCTL_STORE_BACKEND --store-endpoints $STOLONCTL_STORE_URL; then
       echo "Stolon cluster already initialized."
     else
       echo "Initializing Stolon cluster..."
-      exec stolonctl \
+      stolonctl \
         --cluster-name $STOLONCTL_CLUSTER_NAME \
         --store-backend $STOLONCTL_STORE_BACKEND \
         --store-endpoints $STOLONCTL_STORE_URL \
@@ -51,7 +50,7 @@ case "$ROLE" in
     ;;
   "keeper")
     echo "Starting Stolon keeper..."
-    exec stolon-keeper \
+    stolon-keeper \
       --data-dir $STKEEPER_DATA_DIR \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
@@ -67,14 +66,14 @@ case "$ROLE" in
     ;;
   "sentinel")
     echo "Starting Stolon sentinel..."
-    exec stolon-sentinel \
+    stolon-sentinel \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL
     ;;
   "proxy")
     echo "Starting Stolon proxy..."
-    exec stolon-proxy \
+    stolon-proxy \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL \
@@ -85,3 +84,6 @@ case "$ROLE" in
     exit 1
     ;;
 esac
+
+# Keep the script running
+tail -f /dev/null

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set PATH for all users, including the postgres user
+export PATH="$PG_BIN_PATH:$PATH"
+
 echo "Starting Stolon as a $ROLE..."
 
 # Wait for Consul to become ready

@@ -33,9 +33,6 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     PG_BIN_PATH=/usr/lib/postgresql/16/bin \
     PG_PORT=5432
 
-# Add the PostgreSQL binaries to the PATH
-ENV PATH="/usr/lib/postgresql/16/bin:$PATH"
-
 # Expose PostgreSQL and Stolon proxy ports
 EXPOSE 5432 5433
 

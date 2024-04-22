@@ -23,10 +23,15 @@ RUN rm -rf /stolon-installation stolon.tar.gz && \
 # Verify binaries are in the expected location
 RUN ls /usr/local/bin/stolon-*
 
-# Set up the environment variables
-ENV STOLONCTL_CLUSTER_NAME stolon-cluster
-ENV STOLONCTL_STORE_BACKEND consul
-ENV STOLONCTL_STORE_URL http://consul:8500
+# Set up environment variables
+ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
+    STOLONCTL_STORE_BACKEND=consul \
+    STOLONCTL_STORE_URL=http://consul:8500 \
+    CONSUL_PORT=8500 \
+    STKEEPER_DATA_DIR=/stolon/data \
+    PG_DATA_DIR=/var/lib/postgresql/data \
+    PG_BIN_PATH=/usr/lib/postgresql/16/bin \
+    PG_PORT=5432
 
 # Expose PostgreSQL and Stolon proxy ports
 EXPOSE 5432 5433

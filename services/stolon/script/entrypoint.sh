@@ -36,7 +36,7 @@ fi
 case "$ROLE" in
   "ctl")
     echo "Initializing Stolon cluster..."
-    exec stolon-ctl \
+    exec stolonctl \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL \

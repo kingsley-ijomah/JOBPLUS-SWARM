@@ -21,7 +21,7 @@ RUN rm -rf /stolon-installation stolon.tar.gz && \
     apt-get purge -y --auto-remove unzip
 
 # Verify binaries are in the expected location
-RUN ls /usr/local/bin/stolon-*
+RUN ls /usr/local/bin/stolon*
 
 # Set up environment variables
 ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \

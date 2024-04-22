@@ -78,3 +78,6 @@ case "$ROLE" in
     exit 1
     ;;
 esac
+
+# Keep the container running after initialization
+exec "$@"

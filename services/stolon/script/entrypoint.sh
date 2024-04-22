@@ -35,12 +35,15 @@ fi
 
 case "$ROLE" in
   "ctl")
+    echo "Initializing Stolon cluster..."
     exec stolon-ctl \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
-      --store-endpoints $STOLONCTL_STORE_URL
+      --store-endpoints $STOLONCTL_STORE_URL \
+      init --yes
     ;;
   "keeper")
+    echo "Starting Stolon keeper..."
     exec stolon-keeper \
       --data-dir $STKEEPER_DATA_DIR \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
@@ -56,12 +59,14 @@ case "$ROLE" in
       --pg-port $PG_PORT
     ;;
   "sentinel")
+    echo "Starting Stolon sentinel..."
     exec stolon-sentinel \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL
     ;;
   "proxy")
+    echo "Starting Stolon proxy..."
     exec stolon-proxy \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \

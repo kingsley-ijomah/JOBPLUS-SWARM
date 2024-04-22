@@ -35,12 +35,19 @@ echo "Starting Stolon as a $ROLE..."
 
 case "$ROLE" in
   "ctl")
-    echo "Initializing Stolon cluster..."
-    exec stolonctl \
-      --cluster-name $STOLONCTL_CLUSTER_NAME \
-      --store-backend $STOLONCTL_STORE_BACKEND \
-      --store-endpoints $STOLONCTL_STORE_URL \
-      init --yes
+    echo "Checking if Stolon cluster is already initialized..."
+    # Try to retrieve the cluster status
+    if stolonctl status --cluster-name $STOLONCTL_CLUSTER_NAME --store-backend $STOLONCTL_STORE_BACKEND --store-endpoints $STOLONCTL_STORE_URL; then
+      echo "Stolon cluster already initialized."
+    else
+      echo "Initializing Stolon cluster..."
+      exec stolonctl \
+        --cluster-name $STOLONCTL_CLUSTER_NAME \
+        --store-backend $STOLONCTL_STORE_BACKEND \
+        --store-endpoints $STOLONCTL_STORE_URL \
+        init --yes
+      echo "Stolon cluster initialized."
+    fi
     ;;
   "keeper")
     echo "Starting Stolon keeper..."

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fetch the IP address of the container
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
+
 # echo "Initializing PostgreSQL data directory..."
 # # Check if the data directory is already initialized
 # if [ ! -d "$PG_DATA_DIR/base" ]; then
@@ -20,9 +23,6 @@ while ! curl -s http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/status/leader | 
     sleep 1
 done
 echo "Consul is ready."
-
-# Fetch the IP address of the container
-IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 if [ "$ROLE" = "sentinel" ]; then
     # Verify registration with Consul

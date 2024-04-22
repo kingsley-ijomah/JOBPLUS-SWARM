@@ -42,7 +42,7 @@ services:
   stolon-keeper:
     image: yasilo8240/jobplus-stolon:latest
     depends_on:
-      # - stolon-ctl
+      - stolon-ctl
       - consul
     environment:
       - ROLE=keeper
@@ -64,19 +64,19 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  # stolon-sentinel:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   environment:
-  #     - ROLE=sentinel
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
-  #   depends_on:
-  #     - stolon-keeper
-  #     - consul
+  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  stolon-sentinel:
+    image: yasilo8240/jobplus-stolon:latest
+    environment:
+      - ROLE=sentinel
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    depends_on:
+      - stolon-keeper
+      - consul
 
 volumes:
   stolon_data:

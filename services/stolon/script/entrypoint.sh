@@ -16,22 +16,22 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 echo "Starting Stolon as a $ROLE..."
 
-# Wait for Consul to become ready
-echo "Waiting for Consul to be ready at $STOLONCTL_STORE_BACKEND:$CONSUL_PORT..."
-while ! curl -s http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/status/leader | grep -q '"'; do
-    echo "Waiting for Consul to start..."
-    sleep 1
-done
-echo "Consul is ready."
+# # Wait for Consul to become ready
+# echo "Waiting for Consul to be ready at $STOLONCTL_STORE_BACKEND:$CONSUL_PORT..."
+# while ! curl -s http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/status/leader | grep -q '"'; do
+#     echo "Waiting for Consul to start..."
+#     sleep 1
+# done
+# echo "Consul is ready."
 
-if [ "$ROLE" = "sentinel" ]; then
-    # Verify registration with Consul
-    while ! curl -s "http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
-        echo "Keeper not registered in Consul, waiting..."
-        sleep 1
-    done
-    echo "Keeper is registered in Consul."
-fi
+# if [ "$ROLE" = "sentinel" ]; then
+#     # Verify registration with Consul
+#     while ! curl -s "http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+#         echo "Keeper not registered in Consul, waiting..."
+#         sleep 1
+#     done
+#     echo "Keeper is registered in Consul."
+# fi
 
 case "$ROLE" in
   "ctl")

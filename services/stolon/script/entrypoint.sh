@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Set PATH for all users, including the postgres user
-export PATH="$PG_BIN_PATH:$PATH"
+# Add PATH setting to the postgres user's .bash_profile
+echo "export PATH=$PG_BIN_PATH:\$PATH" >> /var/lib/postgresql/.bash_profile
 
 echo "Starting Stolon as a $ROLE..."
 

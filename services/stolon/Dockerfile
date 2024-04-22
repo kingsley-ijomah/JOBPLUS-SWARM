@@ -44,3 +44,6 @@ RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
+
+# Command to keep the container running
+CMD ["tail", "-f", "/dev/null"]

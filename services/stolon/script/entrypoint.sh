@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Add PATH setting to the postgres user's .bash_profile
-echo "export PATH=$PG_BIN_PATH:\$PATH" >> /var/lib/postgresql/.bash_profile
+echo "Initializing PostgreSQL data directory..."
+# Check if the data directory is already initialized
+if [ ! -d "$PG_DATA_DIR/base" ]; then
+    # Set PATH in the session and run initdb
+    su - postgres -c "export PATH=$PG_BIN_PATH:\$PATH; initdb -D $PG_DATA_DIR --encoding=UTF8 --locale=en_US.UTF-8 --data-checksums"
+else
+    echo "PostgreSQL data directory is already initialized."
+fi
 
 echo "Starting Stolon as a $ROLE..."
 

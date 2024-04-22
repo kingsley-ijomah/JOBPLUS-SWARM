@@ -63,25 +63,25 @@ jobs:
       #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
       #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      # - name: Build and Push Etcd Image
+      - name: Build and Push Etcd Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
+
+      # - name: Build and Push Consul Image
       #   run: |
-      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
-      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest" -f services/consul/Dockerfile services/consul/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest"
 
-      - name: Build and Push Consul Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest" -f services/consul/Dockerfile services/consul/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-consul:latest"
+      # - name: Build and Push Stolon CTL Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest" -f services/stolon_ctl/Dockerfile services/stolon_ctl/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest"
 
-      - name: Build and Push Stolon CTL Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest" -f services/stolon_ctl/Dockerfile services/stolon_ctl/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon-ctl:latest"
-
-      - name: Build and Push Stolon Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
+      # - name: Build and Push Stolon Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
 
       # - name: Build and Push Backend Image
       #   run: |

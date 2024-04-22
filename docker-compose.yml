@@ -54,6 +54,7 @@ services:
       - PG_APP_DB=jobplus_db
     volumes:
       - stolon_data:/stolon/data
+      - pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
     deploy:
@@ -77,6 +78,7 @@ services:
 volumes:
   stolon_data:
   console_data:
+  pg_data:
 
 networks:
   shared_swarm_network:

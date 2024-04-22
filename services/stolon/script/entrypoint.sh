@@ -3,10 +3,8 @@
 echo "Starting Stolon as a $ROLE..."
 
 # Wait for Consul to become ready
-CONSUL_HOST="consul"
-CONSUL_PORT=8500
-echo "Waiting for Consul to be ready at $CONSUL_HOST:$CONSUL_PORT..."
-while ! curl -s http://$CONSUL_HOST:$CONSUL_PORT/v1/status/leader | grep -q '"'; do
+echo "Waiting for Consul to be ready at $STOLONCTL_STORE_BACKEND:$CONSUL_PORT..."
+while ! curl -s http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/status/leader | grep -q '"'; do
     echo "Waiting for Consul to start..."
     sleep 1
 done
@@ -17,7 +15,7 @@ IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
 if [ "$ROLE" = "sentinel" ]; then
     # Verify registration with Consul
-    while ! curl -s "http://$CONSUL_HOST:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
+    while ! curl -s "http://$STOLONCTL_STORE_BACKEND:$CONSUL_PORT/v1/kv/stolon/cluster/$STOLONCTL_CLUSTER_NAME/keepers/info?keys" | grep -q "$KEEPER_ID"; do
         echo "Keeper not registered in Consul, waiting..."
         sleep 1
     done

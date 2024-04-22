@@ -55,6 +55,7 @@ services:
     volumes:
       - stolon_data:/stolon/data
       - pg_data:/var/lib/postgresql/data
+      - pg_log:/var/log/postgresql
     networks:
       - shared_swarm_network
     deploy:
@@ -79,6 +80,7 @@ volumes:
   stolon_data:
   console_data:
   pg_data:
+  pg_log:
 
 networks:
   shared_swarm_network:

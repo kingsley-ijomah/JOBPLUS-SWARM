@@ -42,8 +42,6 @@ services:
   # Managing Stolon clusters, providing operational control.
   stolon-ctl:
     image: yasilo8240/jobplus-stolon:latest
-    depends_on:
-      - consul
     environment:
       - ROLE=ctl
     command: /bin/sh -c "tail -f /dev/null" # Keep the container running

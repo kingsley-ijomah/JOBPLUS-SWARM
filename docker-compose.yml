@@ -51,30 +51,30 @@ services:
         constraints: [node.role == manager]
 
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  # stolon-keeper:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   depends_on:
-  #     - stolon-ctl
-  #     - consul
-  #   environment:
-  #     - ROLE=keeper
-  #     - STKEEPER_UID=postgres_{{.Task.ID}}
-  #     - PG_REPL_USERNAME=repluser
-  #     - PG_REPL_PASSWORD=replpass
-  #     - PG_SU_USERNAME=postgres
-  #     - PG_SU_PASSWORD=postgres
-  #     - PG_APP_USER=jobplus_user
-  #     - PG_APP_PASSWORD=mysecurepassword
-  #     - PG_APP_DB=jobplus_db
-  #   volumes:
-  #     - stolon_data:/stolon/data
-  #     - pg_data:/var/lib/postgresql/data
-  #     - pg_log:/var/log/postgresql
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
+  stolon-keeper:
+    image: yasilo8240/jobplus-stolon:latest
+    depends_on:
+      - stolon-ctl
+      - etcd
+    environment:
+      - ROLE=keeper
+      - STKEEPER_UID=postgres_{{.Task.ID}}
+      - PG_REPL_USERNAME=repluser
+      - PG_REPL_PASSWORD=replpass
+      - PG_SU_USERNAME=postgres
+      - PG_SU_PASSWORD=postgres
+      - PG_APP_USER=jobplus_user
+      - PG_APP_PASSWORD=mysecurepassword
+      - PG_APP_DB=jobplus_db
+    volumes:
+      - stolon_data:/stolon/data
+      - pg_data:/var/lib/postgresql/data
+      - pg_log:/var/log/postgresql
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
   # stolon-sentinel:

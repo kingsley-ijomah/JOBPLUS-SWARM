@@ -33,13 +33,6 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     PG_BIN_PATH=/usr/lib/postgresql/16/bin \
     PG_PORT=5432
 
-ENV LOG_DIR=/var/log/postgresql
-
-# Create log directory and set appropriate permissions
-RUN mkdir -p ${LOG_DIR} && \
-    chown -R postgres:postgres ${LOG_DIR} && \
-    chmod 700 ${LOG_DIR}
-
 # Expose PostgreSQL and Stolon proxy ports
 EXPOSE 5432 5433
 

@@ -6,24 +6,12 @@ if [ ! -d "$PG_DATA_DIR/base" ]; then
     # Set PATH in the session and run initdb
     su - postgres -c "export PATH=$PG_BIN_PATH:\$PATH; initdb -D $PG_DATA_DIR --encoding=UTF8 --locale=en_US.UTF-8 --data-checksums"
 
-    # Check if listen_addresses is set to '*', and if not, set it
-    if ! grep -q "listen_addresses = '\*'" $PG_DATA_DIR/postgresql.conf; then
-        echo "listen_addresses = '*'" >> $PG_DATA_DIR/postgresql.conf
-    fi
-
     su - postgres -c "$PG_BIN_PATH/pg_ctl -D $PG_DATA_DIR start"
 else
     echo "PostgreSQL data directory is already initialized."
 fi
 
-# Configure PostgreSQL logging
-cat >> /var/lib/postgresql/data/postgresql.conf <<EOF
-log_destination = 'stderr'
-logging_collector = on
-log_directory = '${LOG_DIR}'
-log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
-log_min_messages = notice
-EOF
+
 
 echo "Starting Stolon as a $ROLE..."
 

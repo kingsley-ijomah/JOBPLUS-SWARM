@@ -33,8 +33,13 @@ if [ "$ROLE" = "sentinel" ]; then
     echo "Keeper is registered in Consul."
 fi
 
-
 case "$ROLE" in
+  "ctl")
+    exec stolon-ctl \
+      --cluster-name $STOLONCTL_CLUSTER_NAME \
+      --store-backend $STOLONCTL_STORE_BACKEND \
+      --store-endpoints $STOLONCTL_STORE_URL
+    ;;
   "keeper")
     exec stolon-keeper \
       --data-dir $STKEEPER_DATA_DIR \

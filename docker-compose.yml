@@ -46,6 +46,7 @@ services:
       - consul
     environment:
       - ROLE=ctl
+    command: /bin/sh -c "tail -f /dev/null" # Keep the container running
     networks:
       - shared_swarm_network
     deploy:

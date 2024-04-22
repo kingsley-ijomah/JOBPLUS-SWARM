@@ -39,18 +39,18 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-  # # Managing Stolon clusters, providing operational control.
-  # stolon-ctl:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   depends_on:
-  #     - consul
-  #   environment:
-  #     - ROLE=ctl
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
+  # Managing Stolon clusters, providing operational control.
+  stolon-ctl:
+    image: yasilo8240/jobplus-stolon:latest
+    depends_on:
+      - consul
+    environment:
+      - ROLE=ctl
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
   # stolon-keeper:

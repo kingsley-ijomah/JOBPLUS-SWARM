@@ -25,9 +25,9 @@ RUN ls /usr/local/bin/stolon*
 
 # Set up environment variables
 ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
-    STOLONCTL_STORE_BACKEND=consul \
-    STOLONCTL_STORE_URL=http://consul:8500 \
-    CONSUL_PORT=8500 \
+    STOLONCTL_STORE_BACKEND=etcdv3 \
+    STOLONCTL_STORE_URL=http://etcd:2379 \
+    # CONSUL_PORT=8500 \
     STKEEPER_DATA_DIR=/stolon/data \
     PG_DATA_DIR=/var/lib/postgresql/data \
     PG_BIN_PATH=/usr/lib/postgresql/16/bin \

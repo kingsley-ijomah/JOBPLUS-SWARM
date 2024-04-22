@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Configure PostgreSQL logging
+cat >> /var/lib/postgresql/data/postgresql.conf <<EOF
+log_destination = 'stderr'
+logging_collector = on
+log_directory = '${LOG_DIR}'
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+log_min_messages = notice
+EOF
+
 echo "Initializing PostgreSQL data directory..."
 # Check if the data directory is already initialized
 if [ ! -d "$PG_DATA_DIR/base" ]; then

@@ -57,11 +57,14 @@ case "$ROLE" in
       --store-endpoints $STOLONCTL_STORE_URL \
       --pg-listen-address $IP_ADDRESS \
       --pg-repl-username $PG_REPL_USERNAME \
-      --pg-repl-password $PG_REPL_PASSWORD \
+      # --pg-repl-password $PG_REPL_PASSWORD \
+      --pg-repl-passwordfile $PG_REPL_PASSWORDFILE \
       --pg-su-username $PG_SU_USERNAME \
-      --pg-su-password $PG_SU_PASSWORD \
+      # --pg-su-password $PG_SU_PASSWORD \
+      --pg-su-passwordfile $PG_SU_PASSWORDFILE \
       --uid $STKEEPER_UID \
       --pg-bin-path $PG_BIN_PATH \
+      --log-level debug \
       --pg-port $PG_PORT
     ;;
   "sentinel")

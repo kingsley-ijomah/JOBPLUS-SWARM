@@ -1,5 +1,11 @@
 version: '3.8'
 
+secrets:
+  pgsql:
+    file: ./secrets/pgsql
+  pgsql_repl:
+    file: ./secrets/pgsql_repl
+
 services:
   # consul:
   #   image: yasilo8240/jobplus-consul:latest
@@ -60,12 +66,14 @@ services:
       - ROLE=keeper
       - STKEEPER_UID=postgres_{{.Task.ID}}
       - PG_REPL_USERNAME=repluser
-      - PG_REPL_PASSWORD=replpass
+      # - PG_REPL_PASSWORD=replpass
+      - PG_REPL_PASSWORD_FILE=/run/secrets/pgsql_repl
       - PG_SU_USERNAME=postgres
-      - PG_SU_PASSWORD=postgres
-      - PG_APP_USER=jobplus_user
-      - PG_APP_PASSWORD=mysecurepassword
-      - PG_APP_DB=jobplus_db
+      # - PG_SU_PASSWORD=postgres
+      - PG_SU_PASSWORD_FILE=/run/secrets/pgsql
+    secrets:
+      - pgsql
+      - pgsql_repl
     volumes:
       - stolon_data:/stolon/data
       - pg_data:/var/lib/postgresql/data
@@ -100,3 +108,4 @@ volumes:
 networks:
   shared_swarm_network:
     external: true
+

@@ -6,7 +6,7 @@ ENV STOLON_VERSION v0.17.0
 
 # Install necessary packages
 RUN apt-get update && \
-    apt-get install -y curl unzip && \
+    apt-get install -y curl unzip procps && \
     rm -rf /var/lib/apt/lists/* 
 
 # Download and extract Stolon

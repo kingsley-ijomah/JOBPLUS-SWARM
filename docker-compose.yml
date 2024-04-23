@@ -95,7 +95,7 @@ services:
     command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-passwordfile /run/secrets/pgsql --pg-repl-passwordfile /run/secrets/pgsql_repl --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379 --log-level debug
     networks:
       - shared_swarm_network
-   deploy:
+    deploy:
       placement:
         constraints: [node.role == manager]
 

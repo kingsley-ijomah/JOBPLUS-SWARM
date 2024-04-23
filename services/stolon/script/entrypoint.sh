@@ -57,9 +57,9 @@ case "$ROLE" in
       --store-endpoints $STOLONCTL_STORE_URL \
       --pg-listen-address $IP_ADDRESS \
       --pg-repl-username $PG_REPL_USERNAME \
-      --pg-repl-passwordfile $PG_REPL_PASSWORDFILE \
+      --pg-repl-passwordfile $PG_REPL_PASSWORD_FILE \
       --pg-su-username $PG_SU_USERNAME \
-      --pg-su-passwordfile $PG_SU_PASSWORDFILE \
+      --pg-su-passwordfile $PG_SU_PASSWORD_FILE \
       --uid $STKEEPER_UID \
       --pg-bin-path $PG_BIN_PATH \
       --log-level debug \

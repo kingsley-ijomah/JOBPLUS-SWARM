@@ -1,4 +1,4 @@
-ENV PGVERSION=15
+ARG PGVERSION=15
 
 # Use the official PostgreSQL image as a base
 FROM postgres:${PGVERSION}

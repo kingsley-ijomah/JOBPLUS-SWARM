@@ -34,7 +34,7 @@ case "$ROLE" in
       --pg-su-password $PG_SU_PASSWORD \
       --uid $STKEEPER_UID \
       --pg-bin-path $PG_BIN_PATH \
-      --log-level debug \
+      # --log-level debug \
       --pg-port $PG_PORT
     ;;
   "sentinel")

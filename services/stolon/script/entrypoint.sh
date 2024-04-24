@@ -22,7 +22,7 @@ case "$ROLE" in
     ;;
   "keeper")
     echo "Starting Stolon keeper..."
-    gosu stolon stolon-keeper \
+    stolon-keeper \
       --data-dir $STKEEPER_DATA_DIR \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \

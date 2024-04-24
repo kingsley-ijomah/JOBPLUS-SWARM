@@ -30,7 +30,7 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     # CONSUL_PORT=8500 \
     STKEEPER_DATA_DIR=/stolon/data \
     PG_DATA_DIR=/var/lib/postgresql/data \
-    PG_BIN_PATH=/usr/lib/postgresql/16/bin \
+    PG_BIN_PATH=/usr/lib/postgresql/15/bin \
     PG_PORT=5432
 
 # Expose PostgreSQL and Stolon proxy ports

@@ -1,8 +1,9 @@
 # Use the official PostgreSQL image as a base with the version from the argument
-FROM postgres:15.6
+# FROM postgres:15.6
+FROM postgres:16.2
 
-# Define the version of PostgreSQL being used
-ARG PG_VERSION=15
+# Define the version of PostgreSQL being used, this matches folder in /usr/lib/postgresql/${PG_VERSION}/bin
+ARG PG_VERSION=16
 
 # Define the version of Stolon being used
 ENV STOLON_VERSION v0.17.0

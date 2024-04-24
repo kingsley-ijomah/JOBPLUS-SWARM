@@ -62,3 +62,7 @@
   command: mv /tmp/etcd-v3.3.25-linux-amd64/etcdctl /usr/local/bin/etcdctl
   args:
     creates: /usr/local/bin/etcdctl
+
+- name: Label Docker Swarm nodes
+  shell: "docker node update --label-add role={{ inventory_hostname }} {{ inventory_hostname }}"
+  delegate_to: "{{ groups['swarm_managers'][0] }}"

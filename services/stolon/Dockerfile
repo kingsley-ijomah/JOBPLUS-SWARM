@@ -33,7 +33,7 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     STOLONCTL_STORE_URL=http://etcd:2379 \
     STKEEPER_DATA_DIR=/stolon/data \
     PG_DATA_DIR=/var/lib/postgresql/data \
-    PG_BIN_PATH=/usr/lib/postgresql/${PG_VERSION}/bin \
+    PG_BIN_PATH=/usr/lib/postgresql/15/bin \
     PG_PORT=5432
 
 # Expose PostgreSQL and Stolon proxy ports

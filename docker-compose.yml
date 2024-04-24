@@ -32,7 +32,7 @@ services:
     image: yasilo8240/jobplus-stolon:latest
     environment:
       - ROLE=keeper
-      - STKEEPER_UID=postgres_{{.Task.ID}}
+      - STKEEPER_UID=keeper1
       - PG_REPL_USERNAME=repluser
       - PG_REPL_PASSWORD=repl_password
       - PG_SU_USERNAME=postgres
@@ -46,20 +46,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-
-  # stolon-keeper:
-  #   image: sorintlab/stolon:master-pg10
-  #   hostname: keeper1
-  #   environment:
-  #     - PGDATA=/var/lib/postgresql/data
-  #   volumes:
-  #     - pg_data:/var/lib/postgresql/data
-  #   command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-password password1 --pg-repl-password password2 --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
 
   # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
   stolon-sentinel:
@@ -75,6 +61,20 @@ services:
       - stolon-keeper
       - etcd
 
+  # Deploys Stolon Proxy for routing client connections to the right PostgreSQL instance.
+  stolon-proxy:
+    image: yasilo8240/jobplus-stolon:latest
+    environment:
+      - ROLE=proxy
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    depends_on:
+      - stolon-keeper
+      - etcd
+      
 volumes:
   stolon_data:
   console_data:

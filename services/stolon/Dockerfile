@@ -1,5 +1,5 @@
 # Argument to define PostgreSQL version, with a default value
-ARG PG_VERSION=15
+ARG PG_VERSION=15.1
 
 # Use the official PostgreSQL image as a base with the version from the argument
 FROM postgres:${PG_VERSION}

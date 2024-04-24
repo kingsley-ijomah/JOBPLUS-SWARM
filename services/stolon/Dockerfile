@@ -1,5 +1,4 @@
-# Stolon upto now supports upto PostgreSQL 15.4-1.pgdg120+1 
-ARG PG_VERSION=15.0
+ ARG PG_VERSION=15.6-1.pgdg120+
 # 15.6-1.pgdg120+
 # Use the official PostgreSQL image as a base with the version from the argument
 FROM postgres:${PG_VERSION}
@@ -33,7 +32,7 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     STOLONCTL_STORE_URL=http://etcd:2379 \
     STKEEPER_DATA_DIR=/stolon/data \
     PG_DATA_DIR=/var/lib/postgresql/data \
-    PG_BIN_PATH=/usr/lib/postgresql/15/bin \
+    PG_BIN_PATH=/usr/lib/postgresql/15.6-1.pgdg120+/bin \
     PG_PORT=5432
 
 # Expose PostgreSQL and Stolon proxy ports

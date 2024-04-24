@@ -1,12 +1,36 @@
 version: '3.8'
 
-# secrets:
-#   pgsql:
-#     file: ./services/stolon/secrets/pgsql
-#   pgsql_repl:
-#     file: ./services/stolon/secrets/pgsql_repl
+secrets:
+  pgsql:
+    file: ./services/stolon/secrets/pgsql
+  pgsql_repl:
+    file: ./services/stolon/secrets/pgsql_repl
 
 services:
+  # consul:
+  #   image: yasilo8240/jobplus-consul:latest
+  #   volumes:
+  #     # - '/mnt/shared_storage/consul-data:/consul-data'
+  #     - console_data:/consul/data
+  #   ports:
+  #     - '8500:8500'  # Expose the Consul UI and API port
+  #     - "8400:8400"
+  #     - "8301-8302:8301-8302"
+  #     - "8301-8302:8301-8302/udp"
+  #     - "8600:8600"
+  #     - "8600:8600/udp"
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager] # change to worker later if needed
+  #     restart_policy:
+  #       condition: on-failure
+  #   environment:
+  #     CONSUL_BIND_INTERFACE: 'eth0'
+  #     CONSUL_CLIENT_INTERFACE: 'eth0'
+  #   command: "agent -server -ui -bootstrap -client=0.0.0.0 -bind={{ GetInterfaceIP 'eth0' }} -data-dir=/consul/data"
+
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
     image: yasilo8240/jobplus-etcd:latest
@@ -21,7 +45,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-
   # Managing Stolon clusters, providing operational control.
   stolon-ctl:
     image: yasilo8240/jobplus-stolon:latest
@@ -66,11 +89,10 @@ services:
       - PGDATA=/var/lib/postgresql/data
     volumes:
       - pg_data:/var/lib/postgresql/data
-    # secrets:
-    #   - pgsql
-    #   - pgsql_repl
-    # command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-passwordfile /run/secrets/pgsql --pg-repl-passwordfile /run/secrets/pgsql_repl --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379 --log-level debug
-    command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-password password1 --pg-repl-password password2 --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379
+    secrets:
+      - pgsql
+      - pgsql_repl
+    command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-passwordfile /run/secrets/pgsql --pg-repl-passwordfile /run/secrets/pgsql_repl --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379 --log-level debug
     networks:
       - shared_swarm_network
     deploy:

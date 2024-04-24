@@ -1,8 +1,8 @@
- ARG PG_VERSION=15.6
- ARG PG_BIN_VERSION=15
-# 15.6-1.pgdg120+
 # Use the official PostgreSQL image as a base with the version from the argument
-FROM postgres:${PG_VERSION}
+FROM postgres:15.6
+
+# Define the version of PostgreSQL being used
+ARG PG_VERSION=15
 
 # Define the version of Stolon being used
 ENV STOLON_VERSION v0.17.0
@@ -33,7 +33,7 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     STOLONCTL_STORE_URL=http://etcd:2379 \
     STKEEPER_DATA_DIR=/stolon/data \
     PG_DATA_DIR=/var/lib/postgresql/data \
-    PG_BIN_PATH=/usr/lib/postgresql/${PG_BIN_VERSION}/bin \
+    PG_BIN_PATH=/usr/lib/postgresql/${PG_VERSION}/bin \
     PG_PORT=5432
 
 # Expose PostgreSQL and Stolon proxy ports

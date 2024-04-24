@@ -17,7 +17,7 @@ services:
         constraints: [node.role == manager]
 
   # Managing Stolon clusters, providing operational control.
-  stolon-ctl:
+  ctl:
     image: yasilo8240/jobplus-stolon:latest
     environment:
       - ROLE=ctl
@@ -28,7 +28,7 @@ services:
         constraints: [node.role == manager]
 
   # # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  stolon-keeper:
+  keeper:
     image: yasilo8240/jobplus-stolon:latest
     environment:
       - ROLE=keeper
@@ -48,7 +48,7 @@ services:
         constraints: [node.role == manager]
 
   # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
-  stolon-sentinel:
+  sentinel:
     image: yasilo8240/jobplus-stolon:latest
     environment:
       - ROLE=sentinel
@@ -62,19 +62,21 @@ services:
       - etcd
 
   # Deploys Stolon Proxy for routing client connections to the right PostgreSQL instance.
-  stolon-proxy:
+  proxy:
     image: yasilo8240/jobplus-stolon:latest
     environment:
       - ROLE=proxy
     networks:
       - shared_swarm_network
+    ports:
+      - '5432:5432'
     deploy:
       placement:
         constraints: [node.role == manager]
     depends_on:
       - stolon-keeper
       - etcd
-      
+
 volumes:
   stolon_data:
   console_data:

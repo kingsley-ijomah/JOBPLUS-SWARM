@@ -1,5 +1,5 @@
 # Use the official PostgreSQL image as a base
-FROM postgres:16.2
+FROM postgres:15
 
 # Define the version of Stolon being used
 ENV STOLON_VERSION v0.17.0

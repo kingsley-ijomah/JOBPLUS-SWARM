@@ -1,11 +1,5 @@
 version: '3.8'
 
-# secrets:
-#   pgsql:
-#     file: ./services/stolon/secrets/pgsql
-#   pgsql_repl:
-#     file: ./services/stolon/secrets/pgsql_repl
-
 services:
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
@@ -34,48 +28,38 @@ services:
         constraints: [node.role == manager]
 
   # # Runs Stolon Keeper managing PostgreSQL data persistence and replication.
-  # stolon-keeper:
-  #   image: yasilo8240/jobplus-stolon:latest
-  #   depends_on:
-  #     - stolon-ctl
-  #     - etcd
-  #   environment:
-  #     - ROLE=keeper
-  #     - STKEEPER_UID=postgres_{{.Task.ID}}
-  #     - PG_REPL_USERNAME=repluser
-  #     - PG_REPL_PASSWORD_FILE=/run/secrets/pgsql_repl
-  #     - PG_SU_USERNAME=postgres
-  #     - PG_SU_PASSWORD_FILE=/run/secrets/pgsql
-  #   secrets:
-  #     - pgsql
-  #     - pgsql_repl
-  #   volumes:
-  #     - stolon_data:/stolon/data
-  #     - pg_data:/var/lib/postgresql/data
-  #     - pg_log:/var/log/postgresql
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
-
   stolon-keeper:
-    image: sorintlab/stolon:master-pg10
-    hostname: keeper1
+    image: yasilo8240/jobplus-stolon:latest
     environment:
-      - PGDATA=/var/lib/postgresql/data
+      - ROLE=keeper
+      - STKEEPER_UID=postgres_{{.Task.ID}}
+      - PG_REPL_USERNAME=repluser
+      - PG_REPL_PASSWORD=repl_password
+      - PG_SU_USERNAME=postgres
+      - PG_SU_PASSWORD=su_password
     volumes:
+      - stolon_data:/stolon/data
       - pg_data:/var/lib/postgresql/data
-    # secrets:
-    #   - pgsql
-    #   - pgsql_repl
-    # command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-passwordfile /run/secrets/pgsql --pg-repl-passwordfile /run/secrets/pgsql_repl --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379 --log-level debug
-    command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-password password1 --pg-repl-password password2 --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379
+      - pg_log:/var/log/postgresql
     networks:
       - shared_swarm_network
     deploy:
       placement:
         constraints: [node.role == manager]
+
+  # stolon-keeper:
+  #   image: sorintlab/stolon:master-pg10
+  #   hostname: keeper1
+  #   environment:
+  #     - PGDATA=/var/lib/postgresql/data
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+  #   command: gosu stolon stolon-keeper --pg-listen-address keeper1 --pg-repl-username replication --uid keeper1 --pg-su-username postgres --pg-su-password password1 --pg-repl-password password2 --data-dir /var/lib/postgresql/data --cluster-name stolon-cluster --store-backend=etcdv3 --store-endpoints http://etcd:2379
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
 
   # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
   stolon-sentinel:

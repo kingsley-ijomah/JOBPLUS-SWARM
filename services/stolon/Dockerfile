@@ -1,6 +1,6 @@
 # Stolon upto now supports upto PostgreSQL 15.4-1.pgdg120+1 
-ARG PG_VERSION=15
-
+ARG PG_VERSION=15.0
+# 15.6-1.pgdg120+
 # Use the official PostgreSQL image as a base with the version from the argument
 FROM postgres:${PG_VERSION}
 

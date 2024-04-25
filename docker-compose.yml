@@ -1,6 +1,33 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: yasilo8240/jobplus-nginx:latest
+    ports:
+      - '80:80' # Expose Nginx on port 80
+    restart: always
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == worker]
+      update_config:
+        order: start-first
+    networks:
+      - shared_swarm_network
+
+  visualizer:
+    image: dockersamples/visualizer
+    # Removed ports: '8500:8080' to not expose directly
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - shared_swarm_network
+    depends_on:
+      - nginx
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
     image: yasilo8240/jobplus-etcd:latest
@@ -38,9 +65,8 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_data_keeper1:/stolon/data
-      - pg_data_keeper1:/var/lib/postgresql/data
-      - pg_log_keeper1:/var/log/postgresql
+      - stolon_keeper1_data:/stolon/data
+      - stolon_keeper1_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
     deploy:
@@ -57,9 +83,8 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_data_keeper2:/stolon/data
-      - pg_data_keeper2:/var/lib/postgresql/data
-      - pg_log_keeper2:/var/log/postgresql
+      - stolon_keeper2_data:/stolon/data
+      - stolon_keeper2_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
     deploy:
@@ -76,9 +101,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-    depends_on:
-      - stolon-keeper
-      - etcd
 
   # Deploys Stolon Proxy for routing client connections to the right PostgreSQL instance.
   proxy:
@@ -97,12 +119,10 @@ services:
       - etcd
 
 volumes:
-  stolon_data_keeper1:
-  pg_data_keeper1:
-  pg_log_keeper1:
-  stolon_data_keeper2:
-  pg_data_keeper2:
-  pg_log_keeper2:
+  stolon_keeper1_data:
+  stolon_keeper1_pg_data:
+  stolon_keeper2_data:
+  stolon_keeper2_pg_data:
   etcd_data:
 
 networks:

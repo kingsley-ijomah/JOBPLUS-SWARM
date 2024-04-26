@@ -35,14 +35,12 @@ services:
     networks:
       - shared_swarm_network
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - /mnt/shared_storage/postgres-data:/var/lib/postgresql/data
     deploy:
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.role == worker]
 
-volumes:
-  postgres-data:
-  
+
 networks:
   shared_swarm_network:
     external: true

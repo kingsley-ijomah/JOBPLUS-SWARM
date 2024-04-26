@@ -41,7 +41,23 @@ services:
       placement:
         constraints: [node.role == worker]
 
+  # etcd container acts as a distributed key-value store for cluster configuration and state management.
+  etcd:
+    image: yasilo8240/jobplus-etcd:latest
+    ports:
+      - '2379:2379' # For client communication
+      - '2380:2380' # For other etcd nodes communication
+    volumes:
+      - etcd_data:/etcd-data
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
+volumes:
+  etcd_data:
+  
 networks:
   shared_swarm_network:
     external: true

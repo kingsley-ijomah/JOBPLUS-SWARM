@@ -18,8 +18,6 @@ services:
   visualizer:
     image: dockersamples/visualizer
     # Removed ports: '8500:8080' to not expose directly
-    ports:
-      - '8500:8080'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:

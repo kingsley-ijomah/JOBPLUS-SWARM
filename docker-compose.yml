@@ -1,23 +1,25 @@
 version: '3.8'
 
 services:
-  nginx:
-    image: yasilo8240/jobplus-nginx:latest
-    ports:
-      - '80:80' # Expose Nginx on port 80
-    restart: always
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == worker]
-      update_config:
-        order: start-first
-    networks:
-      - shared_swarm_network
+  # nginx:
+  #   image: yasilo8240/jobplus-nginx:latest
+  #   ports:
+  #     - '80:80' # Expose Nginx on port 80
+  #   restart: always
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       constraints: [node.role == worker]
+  #     update_config:
+  #       order: start-first
+  #   networks:
+  #     - shared_swarm_network
 
   visualizer:
     image: dockersamples/visualizer
     # Removed ports: '8500:8080' to not expose directly
+    ports:
+      - '8500:8080'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:

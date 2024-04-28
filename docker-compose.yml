@@ -55,6 +55,17 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # Managing Stolon clusters, providing operational control.
+  ctl:
+    image: yasilo8240/jobplus-stolon:latest
+    environment:
+      - ROLE=ctl
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
 volumes:
   etcd_data:
   

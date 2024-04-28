@@ -103,6 +103,17 @@ services:
       placement:
         constraints: [node.labels.role == worker2] # Assigns the service to a specific node.
 
+  # Deploys Stolon Sentinel for monitoring and orchestrating cluster failovers.
+  sentinel:
+    image: yasilo8240/jobplus-stolon:latest
+    environment:
+      - ROLE=sentinel
+    networks:
+      - shared_swarm_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
 volumes:
   etcd_data:
   stolon_keeper1_data:

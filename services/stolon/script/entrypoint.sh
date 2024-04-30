@@ -18,6 +18,22 @@ case "$ROLE" in
         --store-endpoints $STOLONCTL_STORE_URL \
         init --yes
       echo "Stolon cluster initialized."
+
+      # Automatically set PostgreSQL parameters after initialization
+      # Set up the Stolon parameters
+      # wal_level: replica - Archive all WAL files
+      # archive_mode: on - Enable WAL archiving
+      # archive_command: test ! -f ${STKEEPER_DATA_DIR}/%f - Check WAL file existence in the STKEEPER_DATA_DIR 
+      # && cp %p ${STKEEPER_DATA_DIR}/%f - Copy WAL files to the STKEEPER_DATA_DIR
+      echo "Setting custom PostgreSQL parameters..."
+      stolonctl update --patch "{
+        \"pgParameters\": {
+          \"wal_level\": \"replica\",
+          \"archive_mode\": \"on\",
+          \"archive_command\": \"test ! -f /${STKEEPER_DATA_DIR}/%f && cp %p /${STKEEPER_DATA_DIR}/%f\"
+        }
+      }"
+      echo "Custom PostgreSQL parameters set."
     fi
     ;;
   "keeper")
@@ -34,7 +50,6 @@ case "$ROLE" in
       --pg-su-password $PG_SU_PASSWORD \
       --uid $STKEEPER_UID \
       --pg-bin-path $PG_BIN_PATH \
-      --pg-parameters $PG_PARAMETERS \
       # --log-level debug \
       --pg-port $PG_PORT
     ;;

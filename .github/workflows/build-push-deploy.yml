@@ -3,7 +3,7 @@ name: Build Push Deploy
 on:
   push:
     branches:
-      - main
+      - backup
 
 jobs:
   deploy-code:
@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2 # Shallow clone to have only the latest commit
-          ref: main
+          ref: backup
 
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |
@@ -40,7 +40,7 @@ jobs:
             git -C $APP_DIR_PATH pull
           else
             rm -rf $APP_DIR_PATH/*
-            git clone -b main ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
+            git clone -b backup ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
           fi;"
 
   build-and-push:
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-          ref: main
+          ref: backup
 
       - name: Log in to Docker Hub
         run: |
@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-          ref: main
+          ref: backup
       
       - name: Set up SSH Keys Access for Digital Ocean Droplet
         run: |

@@ -4,7 +4,7 @@ services:
   nginx:
     image: yasilo8240/jobplus-nginx:latest
     ports:
-      - '80:80'  # Expose Nginx on port 80
+      - '80:80' # Expose Nginx on port 80
     restart: always
     deploy:
       replicas: 3
@@ -19,7 +19,7 @@ services:
     image: dockersamples/visualizer
     # Removed ports: '8500:8080' to not expose directly
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - shared_swarm_network
     deploy:
@@ -127,13 +127,34 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # pgbackup:
+  #   image: postgres:latest
+  #   environment:
+  #     - PGHOST=proxy
+  #     - PGUSER=postgres
+  #     - PGPASSWORD=su_password
+  #   volumes:
+  #     - pgbackups:/backups
+  #   entrypoint: ["sh", "-c"]
+  #   command: |
+  #     while true; do
+  #       pg_basebackup -h $PGHOST -U $PGUSER -D /backups/$(date +%Y%m%d%H%M%S) -F t -z -P
+  #       sleep 86400  # Sleep for a day
+  #     done
+  #   networks:
+  #     - shared_swarm_network
+  #   deploy:
+  #     replicas: 1
+  #     restart_policy:
+  #       condition: on-failure
+
 volumes:
   etcd_data:
   stolon_keeper1_data:
   stolon_keeper1_pg_data:
   stolon_keeper2_data:
   stolon_keeper2_pg_data:
-  
+
 networks:
   shared_swarm_network:
     external: true

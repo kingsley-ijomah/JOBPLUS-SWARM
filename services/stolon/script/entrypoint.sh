@@ -19,26 +19,10 @@ case "$ROLE" in
         init --yes
       echo "Stolon cluster initialized."
 
-      # Automatically set PostgreSQL parameters after initialization
-      # Set up the Stolon parameters
-      # wal_level: replica - Archive all WAL files
-      # archive_mode: on - Enable WAL archiving
-      # archive_command: test ! -f ${STKEEPER_DATA_DIR}/%f - Check WAL file existence in the STKEEPER_DATA_DIR 
-      # && cp %p ${STKEEPER_DATA_DIR}/%f - Copy WAL files to the STKEEPER_DATA_DIR
+      # Setting up WAL ( write-ahead log ) Archiving  
       echo "Setting custom PostgreSQL parameters..."
-      stolonctl update --patch "{
-        \"pgParameters\": {
-          \"wal_level\": \"replica\",
-          \"archive_mode\": \"on\",
-          \"archive_command\": \"test ! -f /${STKEEPER_DATA_DIR}/%f && cp %p /${STKEEPER_DATA_DIR}/%f\"
-        }
-      }"
+      stolonctl update --patch '{"pgParameters":{"wal_level":"replica","archive_mode":"on","archive_command":"test ! -f /stolon/data/wal-archive/%f && cp %p /stolon/data/wal-archive/%f"}}'
       echo "Custom PostgreSQL parameters set."
-
-      # # Reload PostgreSQL configuration
-      # echo "Reloading PostgreSQL configuration..."
-      # psql -h keeper1 -U postgres -c "SELECT pg_reload_conf();"
-      # echo "PostgreSQL configuration reloaded."
     fi
     ;;
   "keeper")

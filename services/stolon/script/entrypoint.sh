@@ -29,11 +29,16 @@ case "$ROLE" in
       stolonctl update --patch "{
         \"pgParameters\": {
           \"wal_level\": \"replica\",
-          \"archive_mode\": \"on\",
+          \"archive_mode\": \"off\",
           \"archive_command\": \"test ! -f /${STKEEPER_DATA_DIR}/%f && cp %p /${STKEEPER_DATA_DIR}/%f\"
         }
       }"
       echo "Custom PostgreSQL parameters set."
+
+      # Reload PostgreSQL configuration
+      echo "Reloading PostgreSQL configuration..."
+      psql -h localhost -U postgres -c "SELECT pg_reload_conf();"
+      echo "PostgreSQL configuration reloaded."
     fi
     ;;
   "keeper")

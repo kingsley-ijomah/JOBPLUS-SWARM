@@ -38,16 +38,6 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     PG_BIN_PATH=/usr/lib/postgresql/${PG_FOLDER}/bin \
     PG_PORT=5432
 
-# Set up the Stolon parameters
-# wal_level: replica - Archive all WAL files
-# archive_mode: on - Enable WAL archiving
-# archive_command: test ! -f ${STKEEPER_DATA_DIR}/%f - Check WAL file existence in the STKEEPER_DATA_DIR 
-# && cp %p ${STKEEPER_DATA_DIR}/%f - Copy WAL files to the STKEEPER_DATA_DIR
-ENV PG_PARAMETERS='{\
-    "wal_level": "replica", \
-    "archive_mode": "on", \
-    "archive_command": "test ! -f ${STKEEPER_DATA_DIR}/%f && cp %p ${STKEEPER_DATA_DIR}/%f"\
-}'
 
 # Expose PostgreSQL and Stolon proxy ports
 EXPOSE 5432 5433

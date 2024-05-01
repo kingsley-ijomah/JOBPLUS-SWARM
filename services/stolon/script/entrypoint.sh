@@ -21,7 +21,7 @@ case "$ROLE" in
 
       # Setting up WAL ( write-ahead log ) Archiving  
       echo "Setting custom PostgreSQL parameters..."
-      stolonctl update --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --patch '{"pgParameters":{"wal_level":"replica","archive_mode":"on","archive_command":"test ! -f $WAL_ARCHIVE_DIR/%f && cp %p $WAL_ARCHIVE_DIR/%f"}}'
+      # stolonctl update --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379 --patch '{"pgParameters":{"wal_level":"replica","archive_mode":"on","archive_command":"test ! -f $WAL_ARCHIVE_DIR/%f && cp %p $WAL_ARCHIVE_DIR/%f"}}'
       echo "Custom PostgreSQL parameters set."
     fi
     ;;

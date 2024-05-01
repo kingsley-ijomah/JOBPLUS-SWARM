@@ -3,10 +3,9 @@
 # Setup cron job
 
 # Create a cron job that runs every minute
-  echo "* * * * * pg_basebackup -h $PGHOST -p $PGPORT -U $PGUSER -D /backups -Fp -X stream -P > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
-
+echo "* * * * * PGPASSWORD=$PGPASSWORD pg_basebackup -h $PGHOST -p $PGPORT -U $PGUSER -D /backups -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
 # Create a cron job that runs every day at 3:00 AM
-# echo "0 3 * * * pg_basebackup -h $PGHOST -p $PGPORT -U $PGUSER -D /backups -Fp -X stream -P > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
+# echo "0 3 * * * PGPASSWORD=$PGPASSWORD pg_basebackup -h $PGHOST -p $PGPORT -U $PGUSER -D /backups -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
 
 # Give execution rights on the cron job
 chmod 0644 /etc/cron.d/pg_basebackup

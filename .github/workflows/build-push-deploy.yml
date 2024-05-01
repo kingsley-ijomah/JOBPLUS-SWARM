@@ -74,10 +74,10 @@ jobs:
       #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
       #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
 
-      # - name: Build and Push PG Backup Image
-      #   run: |
-      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-pgbackup:latest" -f services/pgbackup/Dockerfile services/pgbackup/
-      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-pgbackup:latest"
+      - name: Build and Push PG Backup Image
+        run: |
+          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-pgbackup:latest" -f services/pgbackup/Dockerfile services/pgbackup/
+          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-pgbackup:latest"
     
   deploy-services:
     needs: build-and-push

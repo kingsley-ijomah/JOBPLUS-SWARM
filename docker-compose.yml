@@ -112,6 +112,7 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # Deploys a container for backing up PostgreSQL databases.
   pgbackup:
     image: yasilo8240/jobplus-pgbackup:latest
     environment:
@@ -127,27 +128,6 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
-
-  # pgbackup:
-  #   image: postgres:latest
-  #   environment:
-  #     - PGHOST=proxy
-  #     - PGUSER=postgres
-  #     - PGPASSWORD=su_password
-  #   volumes:
-  #     - pgbackups:/backups
-  #   entrypoint: ["sh", "-c"]
-  #   command: |
-  #     while true; do
-  #       pg_basebackup -h $PGHOST -U $PGUSER -D /backups/$(date +%Y%m%d%H%M%S) -F t -z -P
-  #       sleep 86400  # Sleep for a day
-  #     done
-  #   networks:
-  #     - shared_swarm_network
-  #   deploy:
-  #     replicas: 1
-  #     restart_policy:
-  #       condition: on-failure
 
 volumes:
   etcd_data:

@@ -57,20 +57,20 @@ jobs:
         run: |
           echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-      - name: Build and Push Nginx Docker Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
+      # - name: Build and Push Nginx Docker Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest" -f services/nginx/Dockerfile services/nginx/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-nginx:latest"
 
-      - name: Build and Push Etcd Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
+      # - name: Build and Push Etcd Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest" -f services/etcd/Dockerfile services/etcd/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-etcd:latest"
 
-      - name: Build and Push Stolon Image
-        run: |
-          docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
-          docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
+      # - name: Build and Push Stolon Image
+      #   run: |
+      #     docker build -t "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest" -f services/stolon/Dockerfile services/stolon/
+      #     docker push "${{ secrets.DOCKER_HUB_USERNAME }}/jobplus-stolon:latest"
 
       - name: Build and Push PG Backup Image
         run: |
@@ -100,5 +100,5 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
           cd $APP_DIR_PATH && \
-          cat docker-compose.yml \
+          cat docker-compose.yml &&\
           docker stack deploy -c docker-compose.yml app_stack"

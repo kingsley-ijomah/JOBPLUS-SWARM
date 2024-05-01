@@ -37,7 +37,9 @@ jobs:
           if [ -d $APP_DIR_PATH/.git ]; then
             git -C $APP_DIR_PATH clean -fd
             git -C $APP_DIR_PATH reset --hard HEAD
-            git -C $APP_DIR_PATH pull
+            git -C $APP_DIR_PATH fetch --all
+            git -C $APP_DIR_PATH checkout backup
+            git -C $APP_DIR_PATH pull origin backup
           else
             rm -rf $APP_DIR_PATH/*
             git clone -b backup ${{ secrets.REPO_PAT_URL }} $APP_DIR_PATH
@@ -102,4 +104,3 @@ jobs:
           cd $APP_DIR_PATH && \
           cat docker-compose.yml && \
           docker stack deploy -c docker-compose.yml app_stack"
-          

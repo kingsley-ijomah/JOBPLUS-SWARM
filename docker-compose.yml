@@ -122,6 +122,8 @@ services:
       PGPASSWORD: su_password
     volumes:
       - pg_backups:/backups
+    ports:
+      - '5432:5432'
     networks:
       - shared_swarm_network
     deploy:

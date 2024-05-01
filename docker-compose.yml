@@ -26,21 +26,6 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  jobplus-postgres:
-    image: yasilo8240/jobplus-postgres:latest
-    environment:
-      POSTGRES_USER: jobplus_user
-      POSTGRES_PASSWORD: D3vB*tWsmP3@6#A!
-      POSTGRES_DB: jobplus_prod
-    networks:
-      - shared_swarm_network
-    volumes:
-      - /mnt/shared_storage/postgres-data:/var/lib/postgresql/data
-    deploy:
-      replicas: 4
-      placement:
-        constraints: [node.role == worker]
-
   # etcd container acts as a distributed key-value store for cluster configuration and state management.
   etcd:
     image: yasilo8240/jobplus-etcd:latest
@@ -127,6 +112,22 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  pgbackup:
+    image: yasilo8240/jobplus-pgbackup:latest
+    environment:
+      PGHOST: proxy
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: su_password
+    volumes:
+      - pg_backups:/backups
+    networks:
+      - shared_swarm_network
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
   # pgbackup:
   #   image: postgres:latest
   #   environment:
@@ -154,6 +155,7 @@ volumes:
   stolon_keeper1_pg_data:
   stolon_keeper2_data:
   stolon_keeper2_pg_data:
+  pg_backups:
 
 networks:
   shared_swarm_network:

@@ -118,8 +118,8 @@ services:
     environment:
       PGHOST: proxy
       PGPORT: 5432
-      PGUSER: postgres
-      PGPASSWORD: su_password
+      PGUSER: repluser
+      PGPASSWORD: repl_password
     volumes:
       - pg_backups:/backups
     networks:

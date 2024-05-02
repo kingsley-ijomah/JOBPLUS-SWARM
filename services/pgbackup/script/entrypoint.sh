@@ -2,11 +2,10 @@
 
 # Setup cron job
 
-# Create a cron job that runs every 3 minutes
-echo "*/3 * * * * PGPASSWORD=repl_password pg_basebackup -h proxy -p 5432 -U repluser -D \"/backups/$(date +%Y%m%d-%H%M%S)\" -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
+# Create a cron job that runs every 1 minutes
+echo "* * * * * PGPASSWORD=repl_password pg_basebackup -h proxy -p 5432 -U repluser -D \"/backups/\$(date +\%Y\%m\%d-\%H\%M\%S)\"  -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
 # Create a cron job that runs every day at 3:00 AM
-# echo "0 3 * * * PGPASSWORD=$PGPASSWORD pg_basebackup -h $PGHOST -p $PGPORT -U $PGUSER -D \"$BACKUP_DIR\" -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
-
+# echo "0 3 * * *  PGPASSWORD=repl_password pg_basebackup -h proxy -p 5432 -U repluser -D \"/backups/\$(date +\%Y\%m\%d-\%H\%M\%S)\" -Fp -X stream > /var/log/pg_basebackup.log 2>&1" > /etc/cron.d/pg_basebackup
 
 # Give execution rights on the cron job
 chmod 0644 /etc/cron.d/pg_basebackup

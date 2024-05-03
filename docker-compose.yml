@@ -121,7 +121,7 @@ services:
       PGUSER: repluser
       PGPASSWORD: repl_password
     volumes:
-      - pg_backups:/backups
+      - /mnt/shared_storage/pg-master-backup:/backups
     networks:
       - shared_swarm_network
     deploy:
@@ -135,7 +135,6 @@ volumes:
   stolon_keeper1_pg_data:
   stolon_keeper2_data:
   stolon_keeper2_pg_data:
-  pg_backups:
 
 networks:
   shared_swarm_network:

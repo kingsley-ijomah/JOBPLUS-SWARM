@@ -26,7 +26,7 @@ RUN apt-get purge -y --auto-remove unzip
 
 # Add a user for Stolon and create necessary directories
 RUN useradd -r -U -m -s /bin/bash stolon && \
-    mkdir -p /var/lib/postgresql/data /stolon/wal_archive && \
+    mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \
     chown -R stolon:stolon /stolon /var/lib/postgresql/data
 
 # Set up environment variables
@@ -36,7 +36,7 @@ ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \
     PG_DATA_DIR=/var/lib/postgresql/data \
     PG_BIN_PATH=/usr/lib/postgresql/${PG_FOLDER}/bin \
     PG_PORT=5432 \
-    WAL_ARCHIVE_DIR=/stolon/wal_archive
+    WAL_ARCHIVE_DIR=/var/lib/postgresql/wal_archive
 
 
 # Expose PostgreSQL and Stolon proxy ports

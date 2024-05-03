@@ -27,7 +27,7 @@ RUN apt-get purge -y --auto-remove unzip
 # Add a user for Stolon and create necessary directories
 RUN useradd -r -U -m -s /bin/bash stolon && \
     mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \
-    chown -R stolon:stolon /stolon /var/lib/postgresql/data
+    chown -R stolon:stolon /var/lib/postgresql/wal_archive /var/lib/postgresql/data
 
 # Set up environment variables
 ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \

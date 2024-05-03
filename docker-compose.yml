@@ -7,7 +7,7 @@ services:
       - '80:80' # Expose Nginx on port 80
     restart: always
     deploy:
-      replicas: 3
+      replicas: 1
       placement:
         constraints: [node.role == worker]
       update_config:
@@ -62,7 +62,6 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_keeper1_data:/stolon/data
       - stolon_keeper1_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
@@ -80,7 +79,6 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_keeper2_data:/stolon/data
       - stolon_keeper2_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
@@ -131,9 +129,7 @@ services:
 
 volumes:
   etcd_data:
-  stolon_keeper1_data:
   stolon_keeper1_pg_data:
-  stolon_keeper2_data:
   stolon_keeper2_pg_data:
 
 networks:

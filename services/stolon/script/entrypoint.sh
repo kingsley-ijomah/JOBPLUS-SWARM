@@ -28,7 +28,7 @@ case "$ROLE" in
   "keeper")
     echo "Starting Stolon keeper..."
     stolon-keeper \
-      --data-dir $STKEEPER_DATA_DIR \
+      --data-dir $PG_DATA_DIR \
       --cluster-name $STOLONCTL_CLUSTER_NAME \
       --store-backend $STOLONCTL_STORE_BACKEND \
       --store-endpoints $STOLONCTL_STORE_URL \

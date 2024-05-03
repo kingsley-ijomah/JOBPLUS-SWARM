@@ -63,7 +63,7 @@ services:
       - PG_SU_PASSWORD=su_password
     volumes:
       - stolon_keeper1_data:/stolon/data
-      - stolon_keeper1_pg_data:/stolon/data/postgres
+      - stolon_keeper1_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
     deploy:
@@ -81,7 +81,7 @@ services:
       - PG_SU_PASSWORD=su_password
     volumes:
       - stolon_keeper2_data:/stolon/data
-      - stolon_keeper2_pg_data:/stolon/data/postgres
+      - stolon_keeper2_pg_data:/var/lib/postgresql/data
     networks:
       - shared_swarm_network
     deploy:

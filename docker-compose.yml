@@ -62,7 +62,8 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_keeper1_pg_data:/var/lib/postgresql/data
+      - keeper1_pg_data:/var/lib/postgresql/data
+      - keeper1_wal_archive:/var/lib/postgresql/wal_archive
     networks:
       - shared_swarm_network
     deploy:
@@ -79,7 +80,8 @@ services:
       - PG_SU_USERNAME=postgres
       - PG_SU_PASSWORD=su_password
     volumes:
-      - stolon_keeper2_pg_data:/var/lib/postgresql/data
+      - keeper2_pg_data:/var/lib/postgresql/data
+      - keeper2_wal_archive:/var/lib/postgresql/wal_archive
     networks:
       - shared_swarm_network
     deploy:
@@ -129,8 +131,10 @@ services:
 
 volumes:
   etcd_data:
-  stolon_keeper1_pg_data:
-  stolon_keeper2_pg_data:
+  keeper1_pg_data:
+  keeper2_pg_data:
+  keeper1_wal_archive:
+  keeper2_wal_archive:
 
 networks:
   shared_swarm_network:

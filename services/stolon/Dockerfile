@@ -24,8 +24,14 @@ RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSI
 # Clean up installation files
 RUN apt-get purge -y --auto-remove unzip
 
-# Add a user for Stolon and create necessary directories
-RUN useradd -r -U -m -s /bin/bash stolon && \
+# # Add a user for Stolon and create necessary directories
+# RUN useradd -r -U -m -s /bin/bash stolon && \
+#     mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \
+#     chown -R stolon:stolon /var/lib/postgresql/wal_archive /var/lib/postgresql/data
+
+# Add a user for Stolon with a specific UID/GID, and set permissions
+RUN groupadd -g 9999 stolon && \
+    useradd -r -u 9999 -g stolon -m -s /bin/bash stolon && \
     mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \
     chown -R stolon:stolon /var/lib/postgresql/wal_archive /var/lib/postgresql/data
 

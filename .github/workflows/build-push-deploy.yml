@@ -31,6 +31,7 @@ jobs:
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no deployuser@${{ secrets.MANAGER_RESERVED_IP }} "\
 
           sudo mkdir -p $PG_BACKUP_PATH
+          sudo chown -R 9999:9999 $PG_BACKUP_PATH # Set ownership to stolon user by UID
           sudo mkdir -p $APP_DIR_PATH
           sudo chown -R deployuser:deployuser $APP_DIR_PATH
 

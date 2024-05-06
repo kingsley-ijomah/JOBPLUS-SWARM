@@ -43,3 +43,11 @@ module "ansible_setup" {
   ssh_private_key_path = "/Users/kingsley/.ssh/job_plus_ed25519"
   lb_ip = module.loadbalancer.lb_ip
 }
+
+module "ssh_automate" {
+  source = "./modules/ssh_automate"
+  
+  do_token = var.do_token
+  floating_ip_details = module.floating_ips.floating_ip_details
+  ssh_private_key_path = module.ansible_setup.ssh_private_key_path
+} 

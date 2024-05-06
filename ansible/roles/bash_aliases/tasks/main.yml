@@ -1,0 +1,75 @@
+---
+- name: Ensure .bash_aliases exists for root
+  file:
+    path: '/root/.bash_aliases'
+    state: touch
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add Docker aliases to .bash_aliases
+  lineinfile:
+    path: '/root/.bash_aliases'
+    line: '{{ item }}'
+    create: yes
+  loop:
+    - "alias dps='docker ps'"
+    - "alias dpsa='docker ps -a'"
+    - "alias dsls='docker service ls'"
+    - "alias dcls='docker container ls'"
+
+- name: Add comprehensive Docker functions to .bash_aliases
+  blockinfile:
+    path: '/root/.bash_aliases'
+    block: |
+      # Comprehensive Docker Functions
+
+      function dexec() {
+          # Exec into any container using partial service name
+          # Args: service name
+          local partial_name="$1"
+          local container_id=$(docker container ls --format "{{ '{{.ID}}' }} {{ '{{.Names}}' }}" | awk "/$partial_name/ {print \$1; exit}")
+          if [ -n "$container_id" ]; then
+              echo "Executing into container: $container_id"
+              docker exec -it "$container_id" /bin/sh
+          else
+              echo "No container found with name part: $partial_name"
+          fi
+      }
+      function dexec_id() {
+          # Execute commands in a running container.
+          # Args: container_id, command (default: /bin/sh)
+          docker exec -it "$1" "${2:-/bin/sh}"
+      }
+      function drm_all() {
+          # Stop and remove all running containers.
+          docker stop $(docker ps -aq)
+          docker rm $(docker ps -aq)
+      }
+      function dvrm_unused() {
+          # Remove unused volumes.
+          docker volume prune -f
+      }
+      function dlogs() {
+          # Tail logs of a container.
+          # Args: container_id
+          docker logs -f --tail 100 "$1"
+      }
+      function dcleanup() {
+          # Remove all Docker services and forcibly remove all volumes.
+          echo "Removing all Docker services..."
+          docker service rm $(docker service ls -q)
+          echo "Forcibly removing all Docker volumes..."
+          docker volume rm -f $(docker volume ls -q)
+      }
+      function stl_status() {
+          # Stolon status print
+          # Args: container_id or name
+          docker exec -it "$1" stolonctl status --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379
+      }
+      function stl_data() {
+          # Stolon clusterdata print
+          docker exec -it stolonctl clusterdata read --cluster-name stolon-cluster --store-backend etcdv3 --store-endpoints http://etcd:2379
+      }
+    marker: '# {mark} ANSIBLE MANAGED BLOCK for comprehensive Docker functions'
+    create: yes

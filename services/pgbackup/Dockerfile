@@ -9,8 +9,18 @@ RUN apt-get update && \
 # Copy the entrypoint script to the container
 COPY script/entrypoint.sh /entrypoint.sh
 
+# Add a user for Stolon with a specific UID/GID, and set permissions
+# user and UID used by stolon service image
+RUN groupadd -g 9999 stolon && \
+    useradd -r -u 9999 -g stolon -m -s /bin/bash stolon && \
+    mkdir -p /var/lib/postgresql/backups  && \
+    chown -R stolon:stolon /var/lib/postgresql/backups
+
 # Make the entrypoint script executable
 RUN chmod +x /entrypoint.sh
 
 # Run the entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
+
+# Switch to the stolon user
+USER stolon

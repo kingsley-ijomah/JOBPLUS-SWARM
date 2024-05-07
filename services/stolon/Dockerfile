@@ -25,6 +25,7 @@ RUN curl -L https://github.com/sorintlab/stolon/releases/download/${STOLON_VERSI
 RUN apt-get purge -y --auto-remove unzip
 
 # Add a user for Stolon with a specific UID/GID, and set permissions
+# user and UID used by pg_basebackup
 RUN groupadd -g 9999 stolon && \
     useradd -r -u 9999 -g stolon -m -s /bin/bash stolon && \
     mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \

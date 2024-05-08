@@ -17,6 +17,8 @@
     - "alias dpsa='docker ps -a'"
     - "alias dsls='docker service ls'"
     - "alias dcls='docker container ls'"
+    - "alias dvls='docker volume ls'"
+    - "alias dvrm='docker volume rm -f $(docker volume ls -q)'"
 
 - name: Add comprehensive Docker functions to .bash_aliases
   blockinfile:
@@ -44,7 +46,10 @@
       function drm_all() {
           # Stop and remove all running containers.
           docker stop $(docker ps -aq)
+          echo "Waiting for containers to stop..."
+          sleep 10
           docker rm $(docker ps -aq)
+          echo "Containers removed..."
       }
       function dvrm_unused() {
           # Remove unused volumes.
@@ -59,13 +64,14 @@
           # Remove all Docker services and forcibly remove all volumes.
           echo "Removing all Docker services..."
           docker service rm $(docker service ls -q)
+          # Waits for 15 seconds
+          sleep 15
           echo "Forcibly removing all Docker volumes..."
-          docker volume rm -f $(docker volume ls -q)
+          docker volume rm $(docker volume ls -q)
       }
       function stl_status() {
           # Stolon status print
-          # Args: container name
-          local partial_name="$1"
+          local partial_name="ctl"
           local container_id=$(docker container ls --format "{{ '{{.ID}}' }} {{ '{{.Names}}' }}" | awk "/$partial_name/ {print \$1; exit}")
           if [ -n "$container_id" ]; then
               echo "Executing into container: $container_id"
@@ -80,3 +86,4 @@
       }
     marker: '# {mark} ANSIBLE MANAGED BLOCK for comprehensive Docker functions'
     create: yes
+

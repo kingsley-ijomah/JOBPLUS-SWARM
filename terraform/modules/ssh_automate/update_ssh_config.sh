@@ -6,7 +6,7 @@ ssh_key_path="$3"  # SSH key path from the third argument
 update_or_add() {
   local name="$1"
   local ip="$2"
-  local new_entry="Host $name\n  HostName $ip\n  User deployuser\n  IdentityFile $ssh_key_path"
+  local new_entry="Host $name\n  HostName $ip\n  User root\n  IdentityFile $ssh_key_path"
   
   # Check if the host entry exists
   if grep -q "^Host $name\$" "$config"; then

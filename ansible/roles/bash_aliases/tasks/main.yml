@@ -64,8 +64,15 @@
       }
       function stl_status() {
           # Stolon status print
-          # Args: container_id or name
-          docker exec -it "$1" stolonctl status --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379
+          # Args: container name
+          local partial_name="$1"
+          local container_id=$(docker container ls --format "{{ '{{.ID}}' }} {{ '{{.Names}}' }}" | awk "/$partial_name/ {print \$1; exit}")
+          if [ -n "$container_id" ]; then
+              echo "Executing into container: $container_id"
+              docker exec -it "$container_id" stolonctl status --cluster-name=stolon-cluster --store-backend=etcdv3 --store-endpoints=http://etcd:2379
+          else
+              echo "No container found with name part: $partial_name"
+          fi
       }
       function stl_data() {
           # Stolon clusterdata print

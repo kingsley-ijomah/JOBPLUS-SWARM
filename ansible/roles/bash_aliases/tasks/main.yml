@@ -86,4 +86,3 @@
       }
     marker: '# {mark} ANSIBLE MANAGED BLOCK for comprehensive Docker functions'
     create: yes
-

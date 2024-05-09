@@ -31,7 +31,7 @@ case "$ROLE" in
           "wal_level": "replica",
           "archive_mode": "on",
           "archive_command": "test ! -f $WAL_ARCHIVE_DIR/%f && cp %p $WAL_ARCHIVE_DIR/%f",
-          "log_directory":"/var/log/pg_logs",
+          "log_directory":"/var/log/postgresql",
           "log_filename":"postgresql-%Y-%m-%d.log"
         }
       }'

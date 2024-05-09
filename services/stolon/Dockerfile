@@ -28,8 +28,8 @@ RUN apt-get purge -y --auto-remove unzip
 # user and UID used by pg_basebackup
 RUN groupadd -g 9999 stolon && \
     useradd -r -u 9999 -g stolon -m -s /bin/bash stolon && \
-    mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive && \
-    chown -R stolon:stolon /var/lib/postgresql/wal_archive /var/lib/postgresql/data
+    mkdir -p /var/lib/postgresql/data /var/lib/postgresql/wal_archive /var/log/postgresql && \
+    chown -R stolon:stolon /var/lib/postgresql/wal_archive /var/lib/postgresql/data /var/log/postgresql
 
 # Set up environment variables
 ENV STOLONCTL_CLUSTER_NAME=stolon-cluster \

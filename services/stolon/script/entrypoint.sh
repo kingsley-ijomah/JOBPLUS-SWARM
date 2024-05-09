@@ -32,7 +32,8 @@ case "$ROLE" in
           "archive_mode": "on",
           "archive_command": "test ! -f $WAL_ARCHIVE_DIR/%f && cp %p $WAL_ARCHIVE_DIR/%f",
           "log_directory":"/var/log/postgresql",
-          "log_filename":"postgresql-%Y-%m-%d.log"
+          "log_filename":"postgresql-%Y-%m-%d.log",
+          "logging_collector":"on"
         }
       }'
       echo "Custom PostgreSQL parameters set."

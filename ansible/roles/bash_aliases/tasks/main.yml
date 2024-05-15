@@ -64,9 +64,9 @@
           # Remove all Docker services and forcibly remove all volumes.
           echo "Removing all Docker services..."
           docker service rm $(docker service ls -q)
-          # Waits for 15 seconds
-          sleep 15
-          echo "Forcibly removing all Docker volumes..."
+          # Waits for 20 seconds
+          sleep 20
+          echo "Removing all Docker volumes..."
           docker volume rm $(docker volume ls -q)
       }
       function stl_status() {

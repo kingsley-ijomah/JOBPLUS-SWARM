@@ -105,5 +105,3 @@ jobs:
           cd $APP_DIR_PATH && \
           cat docker-compose.yml && \
           docker stack deploy -c docker-compose.yml app_stack"
-
-          

@@ -19,6 +19,7 @@
     - "alias dcls='docker container ls'"
     - "alias dvls='docker volume ls'"
     - "alias dvrm='docker volume rm -f $(docker volume ls -q)'"
+    - "alias dsrm='docker service rm $(docker service ls -q)'"
 
 - name: Add comprehensive Docker functions to .bash_aliases
   blockinfile:

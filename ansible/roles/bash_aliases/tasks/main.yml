@@ -85,8 +85,37 @@
           # Stolon clusterdata print
           docker exec -it stolonctl clusterdata read --cluster-name stolon-cluster --store-backend etcdv3 --store-endpoints http://etcd:2379
       }
+      function dstop() {
+         # Stop a Docker service by setting replicas to 0
+         # Args: partial service name
+         local partial_name="$1"
+         local service_id=$(docker service ls --format "{{ '{{.ID}}' }} {{ '{{.Name}}' }}" | awk "/$partial_name/ {print \$1; exit}")
+         if [ -n "$service_id" ]; then
+             echo "Stopping service: $service_id"
+             docker service update --replicas 0 "$service_id"
+         else
+             echo "No service found with name part: $partial_name"
+         fi
+      }
+      function dstart() {
+         # Start a Docker service by setting replicas to the desired number, default to 1
+         # Args: partial service name, (optional) number of replicas
+         local partial_name="$1"
+         local replicas="${2:-1}"  # Default to 1 if not provided
+         local service_id=$(docker service ls --format "{{ '{{.ID}}' }} {{ '{{.Name}}' }}" | awk "/$partial_name/ {print \$1; exit}")
+         if [ -n "$service_id" ]; then
+             echo "Starting service: $service_id with $replicas replicas"
+             docker service update --replicas "$replicas" "$service_id"
+         else
+             echo "No service found with name part: $partial_name"
+         fi
+      }
     marker: '# {mark} ANSIBLE MANAGED BLOCK for comprehensive Docker functions'
     create: yes
 
-
-        
+- name: Source .bash_aliases in .bashrc if not already present
+      lineinfile:
+        path: '/root/.bashrc'
+        line: 'if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi'
+        create: yes
+        state: present

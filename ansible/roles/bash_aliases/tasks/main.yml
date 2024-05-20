@@ -114,8 +114,8 @@
     create: yes
 
 - name: Source .bash_aliases in .bashrc if not already present
-      lineinfile:
-        path: '/root/.bashrc'
-        line: 'if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi'
-        create: yes
-        state: present
+  lineinfile:
+    path: '/root/.bashrc'
+    line: 'if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi'
+    create: yes
+    state: present
